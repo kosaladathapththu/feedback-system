@@ -32,9 +32,8 @@ button {
 .login-page {
   min-height: 100vh;
   background:
-    radial-gradient(circle at 10% 0, rgba(187, 143, 69, 0.15), transparent 36%),
-    radial-gradient(circle at 95% 15%, rgba(47, 93, 80, 0.13), transparent 42%),
-    #f6f1e4;
+    linear-gradient(rgba(20, 17, 12, 0.26), rgba(20, 17, 12, 0.45)),
+    url("/restaurant.avif") center/cover no-repeat fixed;
   padding: 28px 18px;
 }
 .guest-header {
@@ -43,7 +42,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: var(--green);
+  color: #fff;
   font-size: 13px;
   font-weight: 700;
 }
@@ -60,12 +59,13 @@ button {
 .brand strong {
   font-family: Fraunces;
   font-size: 18px;
+  color: #fff;
 }
 .brand small {
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 1.6px;
-  color: var(--green);
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 800;
 }
 .brand-light,
@@ -86,35 +86,37 @@ button {
   max-width: 600px;
   min-height: 660px;
   margin: auto;
-  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(249,246,239,0.98));
-  border: 1px solid rgba(22, 51, 44, 0.08);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.26);
   border-radius: 32px;
-  box-shadow: 0 35px 80px -35px rgba(22, 51, 44, 0.35);
+  box-shadow: 0 35px 80px -35px rgba(15, 25, 19, 0.7);
   padding: 26px 30px 20px;
   display: flex;
   flex-direction: column;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
 }
 .guest-spotlight {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: linear-gradient(135deg, rgba(187, 143, 69, 0.12), rgba(47, 93, 80, 0.08));
-  border: 1px solid rgba(187, 143, 69, 0.2);
+  background: rgba(255, 255, 255, 0.11);
+  border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 18px;
   padding: 16px 18px;
   margin-bottom: 18px;
+  backdrop-filter: blur(8px);
 }
 .guest-spotlight h2 {
   margin: 0;
   font-size: 20px;
   font-family: Fraunces;
-  color: var(--ink);
+  color: #fff;
 }
 .guest-spotlight span {
-  background: rgba(22, 51, 44, 0.05);
-  color: var(--green);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
   border-radius: 999px;
   padding: 7px 10px;
   font-size: 11px;
@@ -138,12 +140,13 @@ button {
   display: flex;
   gap: 10px;
   align-items: center;
-  color: var(--ink);
-  background: #f8f2df;
-  border: 1px solid rgba(187, 143, 69, 0.28);
+  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 13px;
   padding: 10px 13px;
   width: max-content;
+  backdrop-filter: blur(10px);
 }
 .location div {
   display: flex;
@@ -151,11 +154,12 @@ button {
 }
 .location strong {
   font-size: 13px;
+  color: #fff;
 }
 .location small {
   font-size: 10px;
   letter-spacing: 1px;
-  color: var(--green);
+  color: rgba(255, 255, 255, 0.78);
 }
 .step {
   padding: 30px 3px 20px;
@@ -179,22 +183,23 @@ button {
 .login-card h1,
 .dash-main h1 {
   font-family: Fraunces;
-  color: var(--ink);
+  color: #fff;
   font-size: 32px;
   line-height: 1.16;
   margin: 0 0 10px;
 }
 .step > p {
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 14px;
   line-height: 1.6;
 }
 .rating-panel {
   margin-top: 18px;
-  background: linear-gradient(135deg, rgba(228, 201, 137, 0.15), rgba(255,255,255,0.9));
-  border: 1px solid rgba(187, 143, 69, 0.25);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 20px;
   padding: 20px 18px 16px;
+  backdrop-filter: blur(8px);
 }
 .stars {
   display: flex;
@@ -224,12 +229,12 @@ button {
 .rating-label {
   margin: 16px 0 0;
   text-align: center;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.78);
   font-weight: 800;
   font-size: 13px;
 }
 .rating-label.chosen {
-  color: var(--green);
+  color: #fff;
 }
 .chips {
   display: flex;
@@ -240,11 +245,11 @@ button {
 .chips button {
   display: flex;
   align-items: center;
-  border: 1.5px solid #dad9d1;
-  background: #fff;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 99px;
   padding: 11px 15px;
-  color: var(--ink);
+  color: #fff;
   font-weight: 700;
   font-size: 13px;
   transition: all 0.2s ease;
@@ -264,32 +269,38 @@ button {
   display: flex;
   flex-direction: column;
   gap: 7px;
-  color: var(--ink);
+  color: #fff;
   font-size: 12px;
   font-weight: 800;
   margin-top: 18px;
 }
 .step label > span {
-  color: #999;
+  color: rgba(255, 255, 255, 0.7);
   font-weight: 500;
 }
 .step textarea,
 .step input,
 .login-card input {
-  border: 1.5px solid #deddd5;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
   padding: 12px 13px;
   outline: none;
 }
 .step textarea:focus,
 .step input:focus,
 .login-card input:focus {
-  border-color: var(--brass);
+  border-color: rgba(228, 201, 137, 0.9);
+  box-shadow: 0 0 0 3px rgba(228, 201, 137, 0.14);
 }
 .step textarea {
   min-height: 105px;
   resize: vertical;
+}
+.step textarea::placeholder,
+.step input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
 }
 .field-row {
   display: grid;
@@ -300,18 +311,18 @@ button {
   flex-direction: row !important;
   align-items: center;
   justify-content: space-between;
-  background: #fbf4e4;
-  border: 1px solid rgba(187, 143, 69, 0.36);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 13px;
   padding: 13px 15px;
 }
 .urgent > span {
   display: flex;
   flex-direction: column;
-  color: var(--ink) !important;
+  color: #fff !important;
 }
 .urgent small {
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.72);
 }
 .urgent input {
   width: 20px;
@@ -324,23 +335,24 @@ button {
   font-weight: 700;
 }
 .review {
-  background: #f8f6ef;
-  border: 1px solid #e5e2d7;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 15px;
   padding: 8px 16px;
   margin-top: 24px;
+  backdrop-filter: blur(8px);
 }
 .review-premium {
-  background: linear-gradient(180deg, rgba(248, 245, 232, 0.96), rgba(255,255,255,0.94));
-  border-color: rgba(187, 143, 69, 0.24);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 .review span {
   display: flex;
   justify-content: space-between;
   gap: 25px;
   padding: 11px 0;
-  border-bottom: 1px solid #e8e5dc;
-  color: var(--muted);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.8);
   font-size: 12px;
 }
 .review span:last-child {
@@ -348,7 +360,7 @@ button {
 }
 .review b {
   text-align: right;
-  color: var(--ink);
+  color: #fff;
 }
 .form-card footer {
   display: flex;
@@ -369,16 +381,17 @@ button {
   font-weight: 800;
 }
 .primary {
-  background: linear-gradient(135deg, var(--ink), #1a3d35);
-  color: var(--gold);
+  background: linear-gradient(135deg, #16332c, #1d4139);
+  color: #f4d68a;
   box-shadow: 0 15px 28px -18px rgba(22, 51, 44, 0.9);
 }
 .primary:disabled {
   opacity: 0.55;
 }
 .back {
-  background: transparent;
-  color: var(--green);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 .thanks {
   text-align: center;
@@ -1465,9 +1478,11 @@ input:disabled {
 }
 .guest-header > span {
   padding: 8px 12px;
-  border: 1px solid rgba(47, 93, 80, 0.13);
+  border: 1px solid rgba(255, 255, 255, 0.42);
   border-radius: 99px;
-  background: rgba(255, 253, 247, 0.65);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  backdrop-filter: blur(10px);
   font-size: 11px;
   letter-spacing: 0.2px;
 }
@@ -1477,18 +1492,24 @@ input:disabled {
 }
 .guest-header .brand strong {
   font-size: 21px;
+  color: #fff;
+}
+.guest-header .brand small {
+  color: rgba(255, 255, 255, 0.76);
 }
 .form-card {
   max-width: 590px;
   min-height: 640px;
-  border: 1px solid rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.45);
   border-radius: 30px;
   padding: 30px 36px;
-  background: rgba(255, 253, 247, 0.92);
+  background: rgba(255, 252, 247, 0.18);
   box-shadow:
     0 30px 70px -38px rgba(12, 46, 37, 0.78),
-    0 2px 0 rgba(255, 255, 255, 0.6) inset;
-  backdrop-filter: blur(12px);
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
 }
 .progress {
   gap: 9px;
@@ -1506,15 +1527,20 @@ input:disabled {
   width: 100%;
   padding: 13px 14px;
   border-radius: 15px;
-  background: linear-gradient(100deg, #fbf3df, #f8f7ee);
-  border-color: rgba(187, 143, 69, 0.26);
-  box-shadow: 0 8px 18px -20px #865b1b;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  box-shadow: 0 8px 18px -20px rgba(20, 17, 12, 0.8);
+  color: #fff;
 }
 .location svg {
   color: #ae7629;
 }
 .location strong {
   font-size: 14px;
+  color: #fff;
+}
+.location small {
+  color: rgba(255, 255, 255, 0.8);
 }
 .step {
   padding: 39px 4px 21px;
@@ -1522,10 +1548,12 @@ input:disabled {
 .step h1 {
   font-size: 36px;
   letter-spacing: -1.1px;
+  color: #fff;
 }
 .step > p {
   font-size: 14px;
   max-width: 420px;
+  color: rgba(255, 255, 255, 0.8);
 }
 .stars {
   justify-content: space-between;
