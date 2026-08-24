@@ -502,7 +502,12 @@ button {
   min-height: 100vh;
   display: grid;
   grid-template-columns: 245px 1fr;
-  background: #f4f2eb;
+  background:
+    linear-gradient(rgba(18, 13, 9, 0.45), rgba(18, 13, 9, 0.58)),
+    url("/rest1.jpeg?v=20260824");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .dashboard aside {
   background: var(--ink);
@@ -624,11 +629,12 @@ input:disabled {
   padding: 10px 14px;
   border: 1px solid rgba(187, 143, 69, 0.35);
   border-radius: 10px;
-  background: #fbf4e4;
+  background: rgba(251, 244, 228, 0.8);
   color: #7a5a24;
   font-size: 12px;
   font-weight: 700;
   text-align: center;
+  backdrop-filter: blur(6px);
 }
 @media (max-width: 700px) {
   .guest-page {
@@ -684,10 +690,12 @@ input:disabled {
 }
 .metric,
 .panel {
-  background: #fff;
-  border: 1px solid #e3e1d8;
+  background: rgba(255, 252, 247, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.32);
   border-radius: 18px;
-  box-shadow: 0 12px 30px -28px #24352d;
+  box-shadow: 0 18px 38px -30px rgba(10, 17, 15, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 .metric {
   padding: 19px;
@@ -1072,7 +1080,12 @@ input:disabled {
 
 /* Refined management workspace */
 .dashboard {
-  background: #f5f4ef;
+  background:
+    linear-gradient(rgba(18, 13, 9, 0.42), rgba(18, 13, 9, 0.58)),
+    url("/rest1.jpeg?v=20260824");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
   grid-template-columns: 272px minmax(0, 1fr);
 }
 .dashboard aside {
