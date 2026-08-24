@@ -49,7 +49,7 @@ button {
   padding: 28px 18px;
 }
 .guest-header {
-  max-width: 600px;
+  max-width: 740px;
   margin: 0 auto 22px;
   display: flex;
   align-items: center;
@@ -95,13 +95,13 @@ button {
   box-shadow: 0 8px 20px -10px #000;
 }
 .form-card {
-  max-width: 600px;
-  min-height: 660px;
+  max-width: 760px;
+  min-height: 670px;
   margin: auto;
-  background: rgba(243, 236, 225, 0.22);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 32px;
-  box-shadow: 0 35px 80px -35px rgba(15, 25, 19, 0.78);
+  background: linear-gradient(180deg, rgba(23, 16, 13, 0.62), rgba(23, 16, 13, 0.52));
+  border: 1px solid rgba(232, 201, 141, 0.15);
+  border-radius: 30px;
+  box-shadow: 0 35px 80px -35px rgba(0, 0, 0, 0.9);
   padding: 26px 30px 20px;
   display: flex;
   flex-direction: column;
@@ -113,8 +113,8 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.09);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 18px;
   padding: 16px 18px;
   margin-bottom: 18px;
@@ -143,20 +143,20 @@ button {
   height: 4px;
   flex: 1;
   border-radius: 4px;
-  background: #e3e2db;
+  background: rgba(255, 255, 255, 0.2);
 }
 .progress span.active {
-  background: var(--brass);
+  background: linear-gradient(90deg, #d9b76a, #f0d88e);
 }
 .location {
   display: flex;
   gap: 10px;
   align-items: center;
   color: #f8f1e5;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
   border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 13px;
-  padding: 10px 13px;
+  border-radius: 14px;
+  padding: 12px 14px;
   width: max-content;
   backdrop-filter: blur(10px);
 }
@@ -187,7 +187,7 @@ button {
   letter-spacing: 1.6px;
   font-size: 10px !important;
   font-weight: 800 !important;
-  color: var(--brass) !important;
+  color: #d7b16a !important;
   margin: 0 0 10px !important;
 }
 .step h1,
@@ -201,15 +201,15 @@ button {
   margin: 0 0 10px;
 }
 .step > p {
-  color: rgba(247, 241, 232, 0.8);
+  color: rgba(247, 241, 232, 0.82);
   font-size: 14px;
   line-height: 1.6;
 }
 .rating-panel {
   margin-top: 18px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 22px;
   padding: 20px 18px 16px;
   backdrop-filter: blur(8px);
 }
@@ -228,20 +228,20 @@ button {
   transform: translateY(-2px) scale(1.03);
 }
 .stars svg {
-  width: 48px;
-  height: 48px;
-  color: #d8d5ca;
+  width: 52px;
+  height: 52px;
+  color: rgba(255, 255, 255, 0.7);
   stroke-width: 1.5;
 }
 .stars .filled {
-  fill: var(--brass);
-  color: var(--brass);
-  filter: drop-shadow(0 8px 16px rgba(187, 143, 69, 0.3));
+  fill: #e4c989;
+  color: #e4c989;
+  filter: drop-shadow(0 8px 18px rgba(228, 201, 137, 0.35));
 }
 .rating-label {
   margin: 16px 0 0;
   text-align: center;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 800;
   font-size: 13px;
 }
@@ -257,8 +257,8 @@ button {
 .chips button {
   display: flex;
   align-items: center;
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
   border-radius: 99px;
   padding: 11px 15px;
   color: #fff;
@@ -267,14 +267,14 @@ button {
   transition: all 0.2s ease;
 }
 .chips button:hover {
-  border-color: rgba(47, 93, 80, 0.4);
+  border-color: rgba(228, 201, 137, 0.4);
   transform: translateY(-1px);
 }
 .chips button.selected {
-  background: linear-gradient(135deg, var(--green), #1d4139);
-  border-color: var(--green);
-  color: #fff;
-  box-shadow: 0 12px 22px -16px rgba(22, 51, 44, 0.7);
+  background: linear-gradient(135deg, #d9b76a, #b98a36);
+  border-color: rgba(228, 201, 137, 0.9);
+  color: #18120d;
+  box-shadow: 0 12px 22px -16px rgba(217, 183, 106, 0.8);
 }
 .step label,
 .login-card label {
@@ -293,9 +293,9 @@ button {
 .step textarea,
 .step input,
 .login-card input {
-  border: 1.5px solid rgba(255, 255, 255, 0.18);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.08);
   color: #f7f1e8;
   padding: 12px 13px;
   outline: none;
@@ -304,7 +304,7 @@ button {
 .step input:focus,
 .login-card input:focus {
   border-color: rgba(228, 201, 137, 0.9);
-  box-shadow: 0 0 0 3px rgba(228, 201, 137, 0.14);
+  box-shadow: 0 0 0 3px rgba(228, 201, 137, 0.12);
 }
 .step textarea {
   min-height: 105px;
@@ -393,9 +393,9 @@ button {
   font-weight: 800;
 }
 .primary {
-  background: linear-gradient(135deg, #16332c, #1d4139);
-  color: #f4d68a;
-  box-shadow: 0 15px 28px -18px rgba(22, 51, 44, 0.9);
+  background: linear-gradient(135deg, #e1bf77, #b98a36);
+  color: #1d150f;
+  box-shadow: 0 15px 28px -18px rgba(185, 138, 54, 0.9);
 }
 .primary:disabled {
   opacity: 0.55;
