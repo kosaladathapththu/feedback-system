@@ -65,6 +65,14 @@ const demoFeedback = [
     createdAt: { toDate: () => new Date(Date.now() - 86400000) },
   },
 ];
+const zoneLabels = {
+  apartment: "Apartment",
+  restaurant: "Restaurant",
+  pool: "Pool",
+  headOffice: "Head Office",
+  lobbyArea: "Lobby Area",
+  washroom: "Washroom",
+};
 const demoLocations = [
   {
     id: "1",
@@ -90,8 +98,39 @@ const demoLocations = [
     floor: "Ground",
     active: true,
   },
+  {
+    id: "4",
+    code: "HO-01",
+    name: "Head Office",
+    zone: "headOffice",
+    floor: "Ground",
+    active: true,
+  },
+  {
+    id: "5",
+    code: "LOB-01",
+    name: "Lobby Area",
+    zone: "lobbyArea",
+    floor: "Lobby",
+    active: true,
+  },
+  {
+    id: "6",
+    code: "WASH-01",
+    name: "Washroom",
+    zone: "washroom",
+    floor: "Ground",
+    active: true,
+  },
 ];
-const zones = ["apartment", "restaurant", "pool", "washroom"];
+const zones = [
+  { value: "apartment", label: "Apartment" },
+  { value: "restaurant", label: "Restaurant" },
+  { value: "pool", label: "Pool" },
+  { value: "headOffice", label: "Head Office" },
+  { value: "lobbyArea", label: "Lobby Area" },
+  { value: "washroom", label: "Washroom" },
+];
 const dateLabel = (v) =>
   v?.toDate
     ? v.toDate().toLocaleDateString()
@@ -490,7 +529,7 @@ export default function DashboardPage() {
                   </span>
                   <h2>{loc.name}</h2>
                   <p>
-                    {loc.code} · {loc.zone} · {loc.floor || "—"}
+                    {loc.code} · {zoneLabels[loc.zone] || loc.zone} · {loc.floor || "—"}
                   </p>
                   <button
                     className="text-button"
@@ -720,7 +759,9 @@ function LocationModal({ value, onClose, onChange, onSave }) {
             onChange={(e) => onChange({ ...value, zone: e.target.value })}
           >
             {zones.map((z) => (
-              <option key={z}>{z}</option>
+              <option key={z.value} value={z.value}>
+                {z.label}
+              </option>
             ))}
           </select>
         </label>

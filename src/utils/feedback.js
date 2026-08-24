@@ -22,7 +22,29 @@ export const categoriesByZone = {
     "Equipment / Facility",
     "Other",
   ],
-  washroom: ["Cleanliness", "Supplies", "Maintenance", "Other"],
+  headOffice: [
+    "Staff Service",
+    "Cleanliness",
+    "Environment",
+    "Security",
+    "Facilities",
+    "Other",
+  ],
+  lobbyArea: [
+    "Cleanliness",
+    "Comfort",
+    "Security",
+    "Staff Service",
+    "Ambience",
+    "Other",
+  ],
+  washroom: [
+    "Cleanliness",
+    "Supplies",
+    "Maintenance",
+    "Accessibility",
+    "Other",
+  ],
 };
 
 export function makeReference(date = new Date()) {

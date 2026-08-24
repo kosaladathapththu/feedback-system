@@ -26,6 +26,30 @@ const previewLocations = [
     floor: "Ground",
     active: true,
   },
+  {
+    id: "preview-ho-01",
+    code: "HO-01",
+    name: "Head Office",
+    zone: "headOffice",
+    floor: "Ground",
+    active: true,
+  },
+  {
+    id: "preview-lobby-01",
+    code: "LOB-01",
+    name: "Lobby Area",
+    zone: "lobbyArea",
+    floor: "Lobby",
+    active: true,
+  },
+  {
+    id: "preview-wash-01",
+    code: "WASH-01",
+    name: "Washroom",
+    zone: "washroom",
+    floor: "Ground",
+    active: true,
+  },
 ];
 
 export async function getLocationByCode(code) {
