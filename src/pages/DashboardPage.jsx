@@ -1,10 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { signOut } from "firebase/auth";
 import {
+  Bath,
   Bell,
+  Building2,
   ChartNoAxesCombined,
   CheckCircle2,
   ClipboardList,
+  DoorOpen,
+  Landmark,
   LayoutDashboard,
   LogOut,
   MapPinned,
@@ -15,7 +19,9 @@ import {
   Search,
   ShieldCheck,
   Star,
+  UtensilsCrossed,
   Users,
+  Waves,
   X,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
@@ -79,6 +85,14 @@ const zoneLabels = {
   lobbyArea: "Lobby Area",
   washroom: "Washroom",
 };
+const feedbackLocationZones = [
+  { value: "apartment", label: "Apartment", icon: Building2 },
+  { value: "restaurant", label: "Restaurant", icon: UtensilsCrossed },
+  { value: "pool", label: "Pool", icon: Waves },
+  { value: "headOffice", label: "Head Office", icon: Landmark },
+  { value: "lobbyArea", label: "Lobby Area", icon: DoorOpen },
+  { value: "washroom", label: "Washroom", icon: Bath },
+];
 const demoLocations = [
   {
     id: "1",
@@ -189,6 +203,20 @@ export default function DashboardPage() {
   const categorySummary = useMemo(() => getCategoryCounts(feedback), [feedback]);
   const topCategories = categorySummary.slice(0, 5);
   const maxCategoryCount = topCategories[0]?.count || 1;
+  const locationSummary = useMemo(
+    () =>
+      feedbackLocationZones.map((zone) => {
+        const count = feedback.filter((item) => {
+          const zoneValue = item.zone || item.locationName?.toLowerCase();
+          return (
+            zoneValue === zone.value ||
+            (zoneValue && zoneValue.includes(zone.label.toLowerCase()))
+          );
+        }).length;
+        return { ...zone, count };
+      }),
+    [feedback],
+  );
   const load = async () => {
     if (!isFirebaseConfigured) {
       const saved = JSON.parse(
@@ -442,36 +470,24 @@ export default function DashboardPage() {
               />
             </div>
             <section className="panel">
-              <h2>All feedback categories</h2>
-              <div className="category-list">
-                {allFeedbackCategories.slice(0, 5).map((category) => {
-                  const count =
-                    categorySummary.find((item) => item.name === category)?.count || 0;
-                  return (
-                    <button
-                      key={category}
-                      type="button"
-                      className="category-row"
-                      onClick={() => {
-                        setCategoryFilter(category);
-                        setStatus("all");
-                        setTab("feedback");
-                      }}
-                    >
-                      <div className="category-row-head">
-                        <span>{category}</span>
-                        <strong>{count}</strong>
-                      </div>
-                      <div className="category-track">
-                        <span
-                          style={{
-                            width: `${Math.max((count / Math.max(feedback.length || 1, 1)) * 100, count ? 8 : 0)}%`,
-                          }}
-                        />
-                      </div>
-                    </button>
-                  );
-                })}
+              <h2>Feedback locations</h2>
+              <div className="location-icon-grid">
+                {locationSummary.map(({ value, label, icon: Icon, count }) => (
+                  <button
+                    key={value}
+                    type="button"
+                    className="location-icon-card"
+                    onClick={() => {
+                      setCategoryFilter(value);
+                      setStatus("all");
+                      setTab("feedback");
+                    }}
+                  >
+                    <span className="location-icon-badge">{count}</span>
+                    <Icon size={26} />
+                    <strong>{label}</strong>
+                  </button>
+                ))}
               </div>
             </section>
             <section className="panel">
@@ -565,31 +581,23 @@ export default function DashboardPage() {
         )}
         {tab === "categories" && (
           <section className="panel full">
-            <h2>Top feedback category</h2>
-            <div className="category-list">
-              {topCategories.length ? (
-                topCategories.map(({ name, count }) => (
+            <h2>Top feedback locations</h2>
+            <div className="location-icon-grid">
+              {locationSummary.length ? (
+                locationSummary.map(({ value, label, icon: Icon, count }) => (
                   <button
-                    key={name}
+                    key={value}
                     type="button"
-                    className="category-row"
+                    className="location-icon-card"
                     onClick={() => {
-                      setCategoryFilter(name);
+                      setCategoryFilter(value);
                       setStatus("all");
                       setTab("feedback");
                     }}
                   >
-                    <div className="category-row-head">
-                      <span>{name}</span>
-                      <strong>{count}</strong>
-                    </div>
-                    <div className="category-track">
-                      <span
-                        style={{
-                          width: `${(count / maxCategoryCount) * 100}%`,
-                        }}
-                      />
-                    </div>
+                    <span className="location-icon-badge">{count}</span>
+                    <Icon size={26} />
+                    <strong>{label}</strong>
                   </button>
                 ))
               ) : (
