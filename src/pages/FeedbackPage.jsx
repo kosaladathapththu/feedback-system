@@ -3,7 +3,6 @@ import { AlertCircle, ArrowLeft, ArrowRight, Check, MapPin, Star } from 'lucide-
 import { useParams } from 'react-router-dom';
 import Brand from '../components/Brand';
 import LoadingState from '../components/LoadingState';
-import { isFirebaseConfigured } from '../firebase/config';
 import { submitFeedback } from '../services/feedbackService';
 import { getLocationByCode } from '../services/locationService';
 import { categoriesByZone, makeReference, validateDetails } from '../utils/feedback';
@@ -13,7 +12,7 @@ export default function FeedbackPage() {
   const { code = '' } = useParams(); const [location, setLocation] = useState(null); const [loading, setLoading] = useState(true);
   const [error, setError] = useState(''); const [step, setStep] = useState(1); const [form, setForm] = useState(initial); const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false); const [reference, setReference] = useState('');
-  useEffect(() => { let live = true; (async () => { try { if (!isFirebaseConfigured) throw new Error('Firebase has not been configured yet.'); const data = await getLocationByCode(code); if (live) setLocation(data); } catch (e) { if (live) setError(e.message); } finally { if (live) setLoading(false); } })(); return () => { live = false; }; }, [code]);
+  useEffect(() => { let live = true; (async () => { try { const data = await getLocationByCode(code); if (live) setLocation(data); } catch (e) { if (live) setError(e.message); } finally { if (live) setLoading(false); } })(); return () => { live = false; }; }, [code]);
   const patch = update => setForm(current => ({ ...current, ...update }));
   const next = () => { if (step === 1 && !form.rating) return setErrors({ rating: 'Choose a rating to continue.' }); if (step === 2 && !form.categories.length) return setErrors({ categories: 'Choose at least one category.' }); const found = step === 3 ? validateDetails(form) : {}; setErrors(found); if (!Object.keys(found).length) setStep(s => s + 1); };
   const send = async () => { const ref = makeReference(); setSubmitting(true); setError(''); try { await submitFeedback(location, form, ref); setReference(ref); setStep(5); } catch (e) { setError(e.message || 'We could not submit your feedback. Please try again.'); } finally { setSubmitting(false); } };
