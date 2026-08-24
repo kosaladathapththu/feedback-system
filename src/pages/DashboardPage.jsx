@@ -177,6 +177,7 @@ export default function DashboardPage() {
     [locationForm, setLocationForm] = useState(null),
     [search, setSearch] = useState(""),
     [status, setStatus] = useState("all"),
+    [categoryFilter, setCategoryFilter] = useState("all"),
     [notice, setNotice] = useState(""),
     [showNotifications, setShowNotifications] = useState(false),
     [seenFeedback, setSeenFeedback] = useState(
@@ -225,11 +226,13 @@ export default function DashboardPage() {
       feedback.filter(
         (f) =>
           (status === "all" || f.status === status) &&
+          (categoryFilter === "all" ||
+            (f.categories || []).includes(categoryFilter)) &&
           `${f.feedbackId} ${f.locationName} ${f.comment} ${f.categories?.join(" ")}`
             .toLowerCase()
             .includes(search.toLowerCase()),
       ),
-    [feedback, status, search],
+    [feedback, status, categoryFilter, search],
   );
   const avg = feedback.length
       ? (feedback.reduce((n, f) => n + f.rating, 0) / feedback.length).toFixed(
@@ -442,9 +445,19 @@ export default function DashboardPage() {
               <h2>All feedback categories</h2>
               <div className="category-list">
                 {allFeedbackCategories.map((category) => {
-                  const count = categorySummary.find((item) => item.name === category)?.count || 0;
+                  const count =
+                    categorySummary.find((item) => item.name === category)?.count || 0;
                   return (
-                    <div key={category} className="category-row">
+                    <button
+                      key={category}
+                      type="button"
+                      className="category-row"
+                      onClick={() => {
+                        setCategoryFilter(category);
+                        setStatus("all");
+                        setTab("feedback");
+                      }}
+                    >
                       <div className="category-row-head">
                         <span>{category}</span>
                         <strong>{count}</strong>
@@ -456,7 +469,7 @@ export default function DashboardPage() {
                           }}
                         />
                       </div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>
@@ -481,15 +494,28 @@ export default function DashboardPage() {
                   placeholder="Search feedback"
                 />
               </div>
-              <select
-                value={status}
-                onChange={(e) => setStatus(e.target.value)}
-              >
-                <option value="all">All statuses</option>
-                <option value="open">Open</option>
-                <option value="in_progress">In progress</option>
-                <option value="resolved">Resolved</option>
-              </select>
+              <div className="filter-row">
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                >
+                  <option value="all">All statuses</option>
+                  <option value="open">Open</option>
+                  <option value="in_progress">In progress</option>
+                  <option value="resolved">Resolved</option>
+                </select>
+                <select
+                  value={categoryFilter}
+                  onChange={(e) => setCategoryFilter(e.target.value)}
+                >
+                  <option value="all">All categories</option>
+                  {allFeedbackCategories.map((category) => (
+                    <option key={category} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <FeedbackTable rows={filtered} onSelect={setSelected} />
           </section>
@@ -543,7 +569,16 @@ export default function DashboardPage() {
             <div className="category-list">
               {topCategories.length ? (
                 topCategories.map(({ name, count }) => (
-                  <div key={name} className="category-row">
+                  <button
+                    key={name}
+                    type="button"
+                    className="category-row"
+                    onClick={() => {
+                      setCategoryFilter(name);
+                      setStatus("all");
+                      setTab("feedback");
+                    }}
+                  >
                     <div className="category-row-head">
                       <span>{name}</span>
                       <strong>{count}</strong>
@@ -555,7 +590,7 @@ export default function DashboardPage() {
                         }}
                       />
                     </div>
-                  </div>
+                  </button>
                 ))
               ) : (
                 <p className="empty-copy">No category data yet.</p>
