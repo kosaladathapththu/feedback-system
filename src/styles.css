@@ -25,14 +25,14 @@ body,
 body {
   margin: 0;
   min-width: 320px;
-  background-color: #d7d1c6;
+  background-color: #120f0d;
   background-image:
-    linear-gradient(rgba(20, 17, 12, 0.26), rgba(20, 17, 12, 0.45)),
+    linear-gradient(rgba(12, 9, 7, 0.58), rgba(12, 9, 7, 0.72)),
     url("/rest1.jpeg?v=20260824");
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
-  background-attachment: fixed;
+  background-attachment: scroll;
 }
 button,
 input,
@@ -54,7 +54,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: #fff;
+  color: #f8f1e5;
   font-size: 13px;
   font-weight: 700;
 }
@@ -71,13 +71,13 @@ button {
 .brand strong {
   font-family: Fraunces;
   font-size: 18px;
-  color: #fff;
+  color: #f8f1e5;
 }
 .brand small {
   font-size: 9px;
   text-transform: uppercase;
   letter-spacing: 1.6px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(248, 241, 229, 0.8);
   font-weight: 800;
 }
 .brand-light,
@@ -98,10 +98,10 @@ button {
   max-width: 600px;
   min-height: 660px;
   margin: auto;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.26);
+  background: rgba(243, 236, 225, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 32px;
-  box-shadow: 0 35px 80px -35px rgba(15, 25, 19, 0.7);
+  box-shadow: 0 35px 80px -35px rgba(15, 25, 19, 0.78);
   padding: 26px 30px 20px;
   display: flex;
   flex-direction: column;
@@ -113,8 +113,8 @@ button {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  background: rgba(255, 255, 255, 0.11);
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 18px;
   padding: 16px 18px;
   margin-bottom: 18px;
@@ -124,11 +124,11 @@ button {
   margin: 0;
   font-size: 20px;
   font-family: Fraunces;
-  color: #fff;
+  color: #f8f1e5;
 }
 .guest-spotlight span {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+  color: #f8f1e5;
   border-radius: 999px;
   padding: 7px 10px;
   font-size: 11px;
@@ -152,9 +152,9 @@ button {
   display: flex;
   gap: 10px;
   align-items: center;
-  color: #fff;
+  color: #f8f1e5;
   background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 13px;
   padding: 10px 13px;
   width: max-content;
@@ -166,12 +166,12 @@ button {
 }
 .location strong {
   font-size: 13px;
-  color: #fff;
+  color: #f8f1e5;
 }
 .location small {
   font-size: 10px;
   letter-spacing: 1px;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(248, 241, 229, 0.78);
 }
 .step {
   padding: 30px 3px 20px;
@@ -195,13 +195,13 @@ button {
 .login-card h1,
 .dash-main h1 {
   font-family: Fraunces;
-  color: #fff;
+  color: #f7f1e8;
   font-size: 32px;
   line-height: 1.16;
   margin: 0 0 10px;
 }
 .step > p {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(247, 241, 232, 0.8);
   font-size: 14px;
   line-height: 1.6;
 }
@@ -281,22 +281,22 @@ button {
   display: flex;
   flex-direction: column;
   gap: 7px;
-  color: #fff;
+  color: #f7f1e8;
   font-size: 12px;
   font-weight: 800;
   margin-top: 18px;
 }
 .step label > span {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(247, 241, 232, 0.72);
   font-weight: 500;
 }
 .step textarea,
 .step input,
 .login-card input {
-  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border: 1.5px solid rgba(255, 255, 255, 0.18);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.12);
+  color: #f7f1e8;
   padding: 12px 13px;
   outline: none;
 }
@@ -312,7 +312,7 @@ button {
 }
 .step textarea::placeholder,
 .step input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(247, 241, 232, 0.62);
 }
 .field-row {
   display: grid;
@@ -323,18 +323,18 @@ button {
   flex-direction: row !important;
   align-items: center;
   justify-content: space-between;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: 13px;
   padding: 13px 15px;
 }
 .urgent > span {
   display: flex;
   flex-direction: column;
-  color: #fff !important;
+  color: #f7f1e8 !important;
 }
 .urgent small {
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(247, 241, 232, 0.72);
 }
 .urgent input {
   width: 20px;
@@ -1449,14 +1449,7 @@ input:disabled {
   position: relative;
   overflow: hidden;
   padding: 38px 20px 28px;
-  background:
-    radial-gradient(circle at 8% 0, rgba(228, 201, 137, 0.38), transparent 28%),
-    radial-gradient(
-      circle at 100% 17%,
-      rgba(65, 111, 94, 0.22),
-      transparent 34%
-    ),
-    linear-gradient(135deg, #f8f0df, #eef3eb 65%, #f7f3e8);
+  background: transparent;
 }
 .guest-page:before,
 .guest-page:after {
@@ -1512,16 +1505,16 @@ input:disabled {
 .form-card {
   max-width: 590px;
   min-height: 640px;
-  border: 1px solid rgba(255, 255, 255, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.28);
   border-radius: 30px;
   padding: 30px 36px;
-  background: rgba(255, 252, 247, 0.18);
+  background: rgba(17, 12, 10, 0.38);
   box-shadow:
-    0 30px 70px -38px rgba(12, 46, 37, 0.78),
-    inset 0 1px 0 rgba(255, 255, 255, 0.5),
-    0 0 0 1px rgba(255, 255, 255, 0.14);
-  backdrop-filter: blur(18px) saturate(1.2);
-  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+    0 30px 70px -38px rgba(0, 0, 0, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(16px) saturate(1.15);
+  -webkit-backdrop-filter: blur(16px) saturate(1.15);
 }
 .progress {
   gap: 9px;
