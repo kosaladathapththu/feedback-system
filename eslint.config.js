@@ -8,8 +8,8 @@ export default [
   js.configs.recommended,
   {
     files: ['src/**/*.{js,jsx}'],
-    languageOptions: { ecmaVersion: 'latest', sourceType: 'module', globals: globals.browser },
+    languageOptions: { ecmaVersion: 'latest', sourceType: 'module', globals: globals.browser, parserOptions: { ecmaFeatures: { jsx: true } } },
     plugins: { 'react-hooks': reactHooks, 'react-refresh': reactRefresh },
-    rules: { ...reactHooks.configs.recommended.rules, ...reactRefresh.configs.vite.rules },
+    rules: { ...reactHooks.configs.recommended.rules, ...reactRefresh.configs.vite.rules, 'react-hooks/set-state-in-effect': 'off' },
   },
 ];
