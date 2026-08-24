@@ -2,7 +2,11 @@ import { collection, doc, getDocs, limit, orderBy, query, runTransaction, server
 import { db } from '../firebase/config';
 
 export async function submitFeedback(location, values, reference) {
-  if (!db) throw new Error('Firebase has not been configured yet.');
+  if (!db) {
+    const stored = JSON.parse(localStorage.getItem('supun-preview-feedback') || '[]');
+    localStorage.setItem('supun-preview-feedback', JSON.stringify([{ feedbackId: reference, locationId: location.code, locationName: location.name, rating: values.rating, categories: values.categories, comment: values.comment.trim(), customerName: values.customerName.trim(), phone: values.phone.trim(), urgent: values.urgent, status: 'open', createdAt: new Date().toISOString() }, ...stored]));
+    return;
+  }
   const feedbackRef = doc(db, 'feedback', reference);
   await runTransaction(db, async transaction => {
     if ((await transaction.get(feedbackRef)).exists()) throw new Error('Reference collision. Please submit again.');
