@@ -187,7 +187,7 @@ export default function DashboardPage() {
         ),
     );
   const categorySummary = useMemo(() => getCategoryCounts(feedback), [feedback]);
-  const topCategories = categorySummary.slice(0, 8);
+  const topCategories = categorySummary.slice(0, 5);
   const maxCategoryCount = topCategories[0]?.count || 1;
   const load = async () => {
     if (!isFirebaseConfigured) {
@@ -444,7 +444,7 @@ export default function DashboardPage() {
             <section className="panel">
               <h2>All feedback categories</h2>
               <div className="category-list">
-                {allFeedbackCategories.map((category) => {
+                {allFeedbackCategories.slice(0, 5).map((category) => {
                   const count =
                     categorySummary.find((item) => item.name === category)?.count || 0;
                   return (
