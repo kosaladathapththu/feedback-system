@@ -47,6 +47,23 @@ export const categoriesByZone = {
   ],
 };
 
+export const allFeedbackCategories = [
+  ...new Set(Object.values(categoriesByZone).flat()),
+];
+
+export function getCategoryCounts(feedback = []) {
+  const counts = {};
+  feedback.forEach((item) => {
+    (item.categories || []).forEach((category) => {
+      counts[category] = (counts[category] || 0) + 1;
+    });
+  });
+
+  return Object.entries(counts)
+    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
+}
+
 export function makeReference(date = new Date()) {
   const day = date.toISOString().slice(0, 10).replaceAll("-", "");
   const suffix = crypto.getRandomValues(new Uint32Array(1))[0] % 10000;

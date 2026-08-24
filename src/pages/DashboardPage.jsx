@@ -31,13 +31,19 @@ import {
 import Brand from "../components/Brand";
 import LoadingState from "../components/LoadingState";
 import { auth, isFirebaseConfigured } from "../firebase/config";
-import { getFeedback, updateFeedback } from "../services/feedbackService";
+import {
+  createAutoReplyDraft,
+  getFeedback,
+  openAutoReplyDraft,
+  updateFeedback,
+} from "../services/feedbackService";
 import {
   getLocations,
   getUsers,
   saveLocation,
   updateUser,
 } from "../services/managementService";
+import { allFeedbackCategories, getCategoryCounts } from "../utils/feedback";
 
 const demoFeedback = [
   {
@@ -179,6 +185,9 @@ export default function DashboardPage() {
           JSON.parse(localStorage.getItem("supun-seen-feedback") || "[]"),
         ),
     );
+  const categorySummary = useMemo(() => getCategoryCounts(feedback), [feedback]);
+  const topCategories = categorySummary.slice(0, 8);
+  const maxCategoryCount = topCategories[0]?.count || 1;
   const load = async () => {
     if (!isFirebaseConfigured) {
       const saved = JSON.parse(
@@ -243,8 +252,17 @@ export default function DashboardPage() {
       setFeedback((all) =>
         all.map((f) => (f.id === selected.id ? { ...f, ...changes } : f)),
       );
+      const nextStatus = changes.status || selected.status;
+      const reply = createAutoReplyDraft({
+        feedback: { ...selected, ...changes },
+        status: nextStatus,
+        comment: changes.resolutionNote || selected.resolutionNote,
+      });
+      if (typeof window !== "undefined") {
+        window.location.href = `mailto:${reply.to}?subject=${encodeURIComponent(reply.subject)}&body=${encodeURIComponent(reply.body)}`;
+      }
       setSelected(null);
-      setNotice("Feedback record updated.");
+      setNotice("Feedback record updated and auto-reply draft opened.");
     } catch (e) {
       setNotice(e.message);
     }
@@ -274,6 +292,7 @@ export default function DashboardPage() {
     ["overview", "Overview", LayoutDashboard],
     ["feedback", "Feedback", MessageSquareText],
     ["analytics", "Analytics", ChartNoAxesCombined],
+    ["categories", "Top feedback category", ChartNoAxesCombined],
     ["locations", "Locations", MapPinned],
     ["team", "Team", Users],
   ];
@@ -420,6 +439,29 @@ export default function DashboardPage() {
               />
             </div>
             <section className="panel">
+              <h2>All feedback categories</h2>
+              <div className="category-list">
+                {allFeedbackCategories.map((category) => {
+                  const count = categorySummary.find((item) => item.name === category)?.count || 0;
+                  return (
+                    <div key={category} className="category-row">
+                      <div className="category-row-head">
+                        <span>{category}</span>
+                        <strong>{count}</strong>
+                      </div>
+                      <div className="category-track">
+                        <span
+                          style={{
+                            width: `${Math.max((count / Math.max(feedback.length || 1, 1)) * 100, count ? 8 : 0)}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+            <section className="panel">
               <h2>Recent feedback</h2>
               <FeedbackTable
                 rows={feedback.slice(0, 5)}
@@ -492,6 +534,32 @@ export default function DashboardPage() {
                   />
                 </BarChart>
               </ResponsiveContainer>
+            </div>
+          </section>
+        )}
+        {tab === "categories" && (
+          <section className="panel full">
+            <h2>Top feedback category</h2>
+            <div className="category-list">
+              {topCategories.length ? (
+                topCategories.map(({ name, count }) => (
+                  <div key={name} className="category-row">
+                    <div className="category-row-head">
+                      <span>{name}</span>
+                      <strong>{count}</strong>
+                    </div>
+                    <div className="category-track">
+                      <span
+                        style={{
+                          width: `${(count / maxCategoryCount) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="empty-copy">No category data yet.</p>
+              )}
             </div>
           </section>
         )}
@@ -673,6 +741,10 @@ function FeedbackTable({ rows, onSelect }) {
     </div>
   );
 }
+function MailIcon(props) {
+  return <Mail {...props} />;
+}
+
 function CaseModal({ item, onClose, onSave }) {
   const [note, setNote] = useState(item.resolutionNote || ""),
     [state, setState] = useState(item.status);
@@ -712,6 +784,20 @@ function CaseModal({ item, onClose, onSave }) {
       >
         <CheckCircle2 />
         Save case
+      </button>
+      <button
+        className="secondary"
+        type="button"
+        onClick={() =>
+          openAutoReplyDraft({
+            feedback: item,
+            status: state,
+            comment: note,
+          })
+        }
+      >
+        <MailIcon />
+        Send status reply
       </button>
     </Modal>
   );

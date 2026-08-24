@@ -91,3 +91,47 @@ export async function updateFeedback(id, changes) {
     ...(changes.status === "resolved" ? { resolvedAt: serverTimestamp() } : {}),
   });
 }
+
+export function createAutoReplyDraft({ feedback, status, comment }) {
+  const reference = feedback?.feedbackId || "N/A";
+  const locationName = feedback?.locationName || "the property";
+  const categoryText = feedback?.categories?.length
+    ? feedback.categories.join(", ")
+    : "General feedback";
+  const statusText =
+    status === "in_progress"
+      ? "in progress"
+      : status === "resolved"
+        ? "resolved"
+        : "received";
+
+  const subject = `Feedback ${statusText} - ${reference}`;
+  const body = [
+    "This is an automated status update from feedback@supungroup.lk.",
+    "",
+    `Feedback reference: ${reference}`,
+    `Location: ${locationName}`,
+    `Category: ${categoryText}`,
+    `Current status: ${statusText}`,
+    comment ? `Update note: ${comment}` : "",
+    "",
+    "Thank you for sharing your feedback. Our team is reviewing this and will continue follow-up as needed.",
+  ]
+    .filter(Boolean)
+    .join("\n");
+
+  return {
+    to: "feedback@supungroup.lk",
+    from: "feedback@supungroup.lk",
+    subject,
+    body,
+  };
+}
+
+export function openAutoReplyDraft({ feedback, status, comment }) {
+  if (typeof window === "undefined") return null;
+  const draft = createAutoReplyDraft({ feedback, status, comment });
+  const mailtoLink = `mailto:${draft.to}?subject=${encodeURIComponent(draft.subject)}&body=${encodeURIComponent(draft.body)}`;
+  window.location.href = mailtoLink;
+  return draft;
+}
