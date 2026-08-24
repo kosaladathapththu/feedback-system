@@ -37,6 +37,17 @@ The first administrator must be provisioned through the Firebase Console or a tr
 
 Run `npm run build`, then deploy rules and hosting with `firebase deploy --only firestore:rules,hosting`. Use separate Firebase projects and environment files for development and production.
 
+## Android and iOS apps
+
+Capacitor packages the same React application as native Android and iOS projects.
+
+1. Install Android Studio for Android builds; install Xcode on a Mac for iOS builds.
+2. Run `npm run mobile:android` to synchronize assets and open Android Studio.
+3. Run `npm run mobile:ios` on macOS to synchronize assets and open Xcode.
+4. After every web change, run `npm run mobile:sync` before testing the native build.
+
+Android APK/AAB packages are built in Android Studio. iOS builds and App Store signing require a Mac with Xcode.
+
 ## Data collections
 
 The application uses `users`, `locations`, `feedback`, `notifications`, and `settings`. Timestamps are written with Firebase server timestamps. Notification documents and sequential references should ultimately be produced by trusted Cloud Functions to guarantee delivery and collision-free numbering at production scale.
