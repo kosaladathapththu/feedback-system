@@ -1,4 +1,4 @@
-import { doc, runTransaction, serverTimestamp } from 'firebase/firestore';
+import { collection, doc, getDocs, limit, orderBy, query, runTransaction, serverTimestamp, updateDoc, where } from 'firebase/firestore';
 import { db } from '../firebase/config';
 
 export async function submitFeedback(location, values, reference) {
@@ -14,4 +14,18 @@ export async function submitFeedback(location, values, reference) {
       updatedAt: serverTimestamp(), resolvedAt: null,
     });
   });
+}
+
+export async function getFeedback({ status = 'all', locationCode = 'all' } = {}) {
+  if (!db) return [];
+  const filters = [];
+  if (status !== 'all') filters.push(where('status', '==', status));
+  if (locationCode !== 'all') filters.push(where('locationId', '==', locationCode));
+  const snapshot = await getDocs(query(collection(db, 'feedback'), ...filters, orderBy('createdAt', 'desc'), limit(100)));
+  return snapshot.docs.map(item => ({ id: item.id, ...item.data() }));
+}
+
+export async function updateFeedback(id, changes) {
+  if (!db) throw new Error('Firebase has not been configured yet.');
+  await updateDoc(doc(db, 'feedback', id), { ...changes, updatedAt: serverTimestamp(), ...(changes.status === 'resolved' ? { resolvedAt: serverTimestamp() } : {}) });
 }
