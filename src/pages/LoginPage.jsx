@@ -1,2 +1,71 @@
-import { useState } from 'react'; import { signInWithEmailAndPassword } from 'firebase/auth'; import { useNavigate } from 'react-router-dom'; import { AlertCircle } from 'lucide-react'; import Brand from '../components/Brand'; import { auth, isFirebaseConfigured } from '../firebase/config';
-export default function LoginPage(){const [email,setEmail]=useState('');const [password,setPassword]=useState('');const [error,setError]=useState('');const nav=useNavigate();async function submit(e){e.preventDefault();setError('');if(!auth)return setError('Add your Firebase configuration to the .env file first.');try{await signInWithEmailAndPassword(auth,email,password);nav('/manage');}catch{setError('Unable to sign in. Check your credentials.');}}return <main className="login-page"><form className="login-card" onSubmit={submit}><Brand/><p className="eyebrow">Management portal</p><h1>Welcome back</h1>{!isFirebaseConfigured&&<div className="setup-notice"><AlertCircle/><span><strong>Firebase setup required</strong><small>Copy .env.example to .env, add your Firebase web configuration, then restart the development server.</small></span></div>}<label>Email<input type="email" required disabled={!isFirebaseConfigured} value={email} onChange={e=>setEmail(e.target.value)}/></label><label>Password<input type="password" required disabled={!isFirebaseConfigured} value={password} onChange={e=>setPassword(e.target.value)}/></label>{error&&<p className="field-error">{error}</p>}<button className="primary" disabled={!isFirebaseConfigured}>Sign in</button></form></main>}
+import { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { AlertCircle } from "lucide-react";
+import Brand from "../components/Brand";
+import { auth, isFirebaseConfigured } from "../firebase/config";
+export default function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const nav = useNavigate();
+  async function submit(e) {
+    e.preventDefault();
+    setError("");
+    if (!auth)
+      return setError(
+        "Add your Firebase configuration to the .env file first.",
+      );
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      nav("/manage");
+    } catch {
+      setError("Unable to sign in. Check your credentials.");
+    }
+  }
+  return (
+    <main className="login-page">
+      <form className="login-card" onSubmit={submit}>
+        <Brand />
+        <p className="eyebrow">Management portal</p>
+        <h1>Welcome back</h1>
+        {!isFirebaseConfigured && (
+          <div className="setup-notice">
+            <AlertCircle />
+            <span>
+              <strong>Firebase setup required</strong>
+              <small>
+                Copy .env.example to .env, add your Firebase web configuration,
+                then restart the development server.
+              </small>
+            </span>
+          </div>
+        )}
+        <label>
+          Email
+          <input
+            type="email"
+            required
+            disabled={!isFirebaseConfigured}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <label>
+          Password
+          <input
+            type="password"
+            required
+            disabled={!isFirebaseConfigured}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        {error && <p className="field-error">{error}</p>}
+        <button className="primary" disabled={!isFirebaseConfigured}>
+          Sign in
+        </button>
+      </form>
+    </main>
+  );
+}

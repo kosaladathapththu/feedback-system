@@ -1,2 +1,32 @@
-import { Navigate, Route, Routes } from 'react-router-dom'; import ProtectedRoute from './components/ProtectedRoute'; import { isFirebaseConfigured } from './firebase/config'; import DashboardPage from './pages/DashboardPage'; import FeedbackPage from './pages/FeedbackPage'; import LoginPage from './pages/LoginPage';
-export default function App(){return <Routes><Route path="/f/:code" element={<FeedbackPage/>}/><Route path="/login" element={isFirebaseConfigured?<LoginPage/>:<Navigate to="/manage" replace/>}/><Route path="/manage/*" element={<ProtectedRoute><DashboardPage/></ProtectedRoute>}/><Route path="*" element={<Navigate to="/manage" replace/>}/></Routes>}
+import { Navigate, Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute";
+import { isFirebaseConfigured } from "./firebase/config";
+import DashboardPage from "./pages/DashboardPage";
+import FeedbackPage from "./pages/FeedbackPage";
+import LoginPage from "./pages/LoginPage";
+export default function App() {
+  return (
+    <Routes>
+      <Route path="/f/:code" element={<FeedbackPage />} />
+      <Route
+        path="/login"
+        element={
+          isFirebaseConfigured ? (
+            <LoginPage />
+          ) : (
+            <Navigate to="/manage" replace />
+          )
+        }
+      />
+      <Route
+        path="/manage/*"
+        element={
+          <ProtectedRoute>
+            <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route path="*" element={<Navigate to="/manage" replace />} />
+    </Routes>
+  );
+}
