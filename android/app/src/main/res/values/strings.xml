@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Supun Guest Experience</string>
+    <string name="title_activity_main">Supun Guest Experience</string>
+    <string name="package_name">com.supungroup.feedback</string>
+    <string name="custom_url_scheme">com.supungroup.feedback</string>
+</resources>
