@@ -16,9 +16,23 @@
 * {
   box-sizing: border-box;
 }
+html,
+body,
+#root {
+  min-height: 100%;
+  height: 100%;
+}
 body {
   margin: 0;
   min-width: 320px;
+  background-color: #d7d1c6;
+  background-image:
+    linear-gradient(rgba(20, 17, 12, 0.26), rgba(20, 17, 12, 0.45)),
+    url("/rest1.jpeg?v=20260824");
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 button,
 input,
@@ -31,9 +45,7 @@ button {
 .guest-page,
 .login-page {
   min-height: 100vh;
-  background:
-    linear-gradient(rgba(20, 17, 12, 0.26), rgba(20, 17, 12, 0.45)),
-    url("/restaurant.avif") center/cover no-repeat fixed;
+  background: transparent;
   padding: 28px 18px;
 }
 .guest-header {
