@@ -1,0 +1,2 @@
+import { Navigate } from 'react-router-dom'; import useAuth from '../hooks/useAuth'; import { isFirebaseConfigured } from '../firebase/config'; import LoadingState from './LoadingState';
+export default function ProtectedRoute({children}){const user=useAuth();if(!isFirebaseConfigured)return children;if(user===undefined)return <LoadingState label="Opening dashboard…"/>;return user?children:<Navigate to="/login" replace/>;}

@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function userDoc() { return get(/databases/$(database)/documents/users/$(request.auth.uid)); }
+    function manager() { return signedIn() && userDoc().data.active == true && userDoc().data.role in ['admin', 'manager']; }
+    function admin() { return manager() && userDoc().data.role == 'admin'; }
+
+    match /locations/{id} {
+      allow get: if resource.data.active == true || manager();
+      allow list: if manager();
+      allow create, update, delete: if admin();
+    }
+    match /feedback/{id} {
+      allow create: if request.resource.data.keys().hasOnly(['feedbackId','locationId','locationName','zone','rating','categories','comment','customerName','phone','urgent','status','assignedTo','resolutionNote','createdAt','updatedAt','resolvedAt'])
+        && request.resource.data.rating is int
+        && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
+        && request.resource.data.categories is list
+        && request.resource.data.categories.size() >= 1
+        && request.resource.data.comment is string && request.resource.data.comment.size() <= 1000
+        && request.resource.data.customerName is string && request.resource.data.customerName.size() <= 100
+        && request.resource.data.phone is string && request.resource.data.phone.size() <= 30
+        && request.resource.data.urgent is bool
+        && request.resource.data.status == 'open'
+        && request.resource.data.createdAt == request.time;
+      allow read, update: if manager();
+      allow delete: if admin();
+    }
+    match /notifications/{id} { allow read, update: if manager(); allow create: if false; allow delete: if admin(); }
+    match /users/{id} { allow read: if signedIn() && (request.auth.uid == id || manager()); allow write: if admin(); }
+    match /settings/{id} { allow read: if manager(); allow write: if admin(); }
+  }
+}
