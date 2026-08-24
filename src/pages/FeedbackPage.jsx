@@ -23,7 +23,9 @@ const initial = {
   rating: 0,
   categories: [],
   comment: "",
+  otherDetail: "",
   customerName: "",
+  email: "",
   phone: "",
   urgent: false,
 };
@@ -61,6 +63,14 @@ export default function FeedbackPage() {
       return setErrors({ rating: "Choose a rating to continue." });
     if (step === 2 && !form.categories.length)
       return setErrors({ categories: "Choose at least one category." });
+    if (
+      step === 2 &&
+      form.categories.includes("Other") &&
+      !form.otherDetail.trim()
+    )
+      return setErrors({
+        categories: "Please tell us more about your other feedback.",
+      });
     const found = step === 3 ? validateDetails(form) : {};
     setErrors(found);
     if (!Object.keys(found).length) setStep((s) => s + 1);
@@ -118,6 +128,13 @@ export default function FeedbackPage() {
       <section className="form-card">
         {step < 5 && (
           <>
+            <div className="guest-spotlight">
+              <div>
+                <p className="eyebrow">Guest experience survey</p>
+                <h2>{location.name}</h2>
+              </div>
+              <span>{location.code}</span>
+            </div>
             <div className="progress" aria-label={`Step ${step} of 4`}>
               {[1, 2, 3, 4].map((n) => (
                 <span key={n} className={n <= step ? "active" : ""} />
@@ -134,32 +151,37 @@ export default function FeedbackPage() {
           </>
         )}
         {step === 1 && (
-          <div className="step">
+          <div className="step premium-step">
             <p className="eyebrow">A quick check-in</p>
             <h1>How was your experience?</h1>
-            <p>Your honest feedback helps us make every stay exceptional.</p>
-            <div className="stars" aria-label="Rating">
-              {[1, 2, 3, 4, 5].map((n) => (
-                <button
-                  aria-label={`${n} stars - ${ratingLabels[n]}`}
-                  key={n}
-                  onClick={() => {
-                    patch({ rating: n });
-                    setErrors({});
-                  }}
-                >
-                  <Star className={n <= form.rating ? "filled" : ""} />
-                </button>
-              ))}
-            </div>
-            <p className={`rating-label ${form.rating ? "chosen" : ""}`}>
-              {form.rating ? ratingLabels[form.rating] : "Select a rating"}
+            <p>
+              Your honest feedback helps us make every stay and visit truly
+              exceptional.
             </p>
+            <div className="rating-panel" aria-label="Rating">
+              <div className="stars">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <button
+                    aria-label={`${n} stars - ${ratingLabels[n]}`}
+                    key={n}
+                    onClick={() => {
+                      patch({ rating: n });
+                      setErrors({});
+                    }}
+                  >
+                    <Star className={n <= form.rating ? "filled" : ""} />
+                  </button>
+                ))}
+              </div>
+              <p className={`rating-label ${form.rating ? "chosen" : ""}`}>
+                {form.rating ? ratingLabels[form.rating] : "Select a rating"}
+              </p>
+            </div>
             {errors.rating && <p className="field-error">{errors.rating}</p>}
           </div>
         )}
         {step === 2 && (
-          <div className="step">
+          <div className="step premium-step">
             <p className="eyebrow">Tell us more</p>
             <h1>What stood out?</h1>
             <p>Select everything that applies.</p>
@@ -175,6 +197,8 @@ export default function FeedbackPage() {
                         categories: on
                           ? form.categories.filter((x) => x !== cat)
                           : [...form.categories, cat],
+                        otherDetail:
+                          cat === "Other" && !on ? form.otherDetail : form.otherDetail,
                       })
                     }
                   >
@@ -183,13 +207,23 @@ export default function FeedbackPage() {
                 );
               })}
             </div>
+            {form.categories.includes("Other") && (
+              <label>
+                Please tell us more <span>optional but helpful</span>
+                <textarea
+                  value={form.otherDetail}
+                  onChange={(e) => patch({ otherDetail: e.target.value })}
+                  placeholder="Tell us what you mean by other feedback…"
+                />
+              </label>
+            )}
             {errors.categories && (
               <p className="field-error">{errors.categories}</p>
             )}
           </div>
         )}
         {step === 3 && (
-          <div className="step">
+          <div className="step premium-step">
             <p className="eyebrow">The details</p>
             <h1>Anything else to share?</h1>
             <label>
@@ -208,23 +242,37 @@ export default function FeedbackPage() {
                 <input
                   value={form.customerName}
                   onChange={(e) => patch({ customerName: e.target.value })}
+                  placeholder="Your name"
                 />
                 {errors.customerName && (
                   <small className="field-error">{errors.customerName}</small>
                 )}
               </label>
               <label>
-                Phone <span>optional</span>
+                Email <span>optional</span>
                 <input
-                  inputMode="tel"
-                  value={form.phone}
-                  onChange={(e) => patch({ phone: e.target.value })}
+                  type="email"
+                  value={form.email}
+                  onChange={(e) => patch({ email: e.target.value })}
+                  placeholder="you@example.com"
                 />
-                {errors.phone && (
-                  <small className="field-error">{errors.phone}</small>
+                {errors.email && (
+                  <small className="field-error">{errors.email}</small>
                 )}
               </label>
             </div>
+            <label>
+              Phone <span>optional</span>
+              <input
+                inputMode="tel"
+                value={form.phone}
+                onChange={(e) => patch({ phone: e.target.value })}
+                placeholder="Contact number"
+              />
+              {errors.phone && (
+                <small className="field-error">{errors.phone}</small>
+              )}
+            </label>
             <label className="urgent">
               <span>
                 <strong>Needs urgent attention</strong>
@@ -239,10 +287,10 @@ export default function FeedbackPage() {
           </div>
         )}
         {step === 4 && (
-          <div className="step">
+          <div className="step premium-step">
             <p className="eyebrow">One last look</p>
             <h1>Ready to send?</h1>
-            <div className="review">
+            <div className="review review-premium">
               <span>
                 Location <b>{location.name}</b>
               </span>
@@ -250,8 +298,13 @@ export default function FeedbackPage() {
                 Rating <b>{"★".repeat(form.rating)}</b>
               </span>
               <span>
-                Categories <b>{form.categories.join(", ")}</b>
+                Categories <b>{form.categories.join(", ") || "General"}</b>
               </span>
+              {form.otherDetail && (
+                <span>
+                  Other details <b>{form.otherDetail}</b>
+                </span>
+              )}
               {form.comment && (
                 <span>
                   Comment <b>{form.comment}</b>
@@ -281,8 +334,13 @@ export default function FeedbackPage() {
                 Rating <b>{"★".repeat(form.rating)}</b>
               </span>
               <span>
-                Categories <b>{form.categories.join(", ")}</b>
+                Categories <b>{form.categories.join(", ") || "General"}</b>
               </span>
+              {form.otherDetail && (
+                <span>
+                  Other details <b>{form.otherDetail}</b>
+                </span>
+              )}
             </div>
             <button
               className="primary thanks-home"

@@ -76,6 +76,8 @@ export function validateDetails(values) {
     errors.comment = "Keep the comment under 1,000 characters.";
   if (values.customerName.length > 100)
     errors.customerName = "Keep the name under 100 characters.";
+  if (values.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email))
+    errors.email = "Enter a valid email address.";
   if (values.phone && !/^[+\d][\d\s()-]{6,24}$/.test(values.phone))
     errors.phone = "Enter a valid phone number.";
   return errors;
