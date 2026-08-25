@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { signOut } from "firebase/auth";
 import {
   Bath,
+  BadgeCheck,
   Bell,
   Building2,
   ChartNoAxesCombined,
@@ -20,6 +21,7 @@ import {
   Search,
   ShieldCheck,
   Star,
+  TriangleAlert,
   UtensilsCrossed,
   Users,
   Waves,
@@ -202,6 +204,25 @@ export default function DashboardPage() {
         ),
   );
   const categorySummary = useMemo(() => getCategoryCounts(feedback), [feedback]);
+  const urgentFeedback = useMemo(
+    () =>
+      feedback
+        .filter((item) => item.urgent && item.status !== "resolved")
+        .slice(0, 3),
+    [feedback],
+  );
+  const positiveFeedback = useMemo(
+    () => feedback.filter((item) => item.rating >= 4).slice(0, 3),
+    [feedback],
+  );
+  const urgentCategories = useMemo(
+    () => getCategoryCounts(urgentFeedback).slice(0, 4),
+    [urgentFeedback],
+  );
+  const positiveCategories = useMemo(
+    () => getCategoryCounts(positiveFeedback).slice(0, 4),
+    [positiveFeedback],
+  );
   const locationSummary = useMemo(
     () =>
       feedbackLocationZones.map((zone) => {
@@ -468,6 +489,111 @@ export default function DashboardPage() {
                 }}
               />
             </div>
+            <section className="sentiment-board" aria-label="Feedback highlights">
+              <article className="sentiment-column urgent-insights">
+                <div className="sentiment-heading">
+                  <span className="sentiment-icon"><TriangleAlert /></span>
+                  <div>
+                    <p>Needs attention</p>
+                    <h2>Urgent feedback</h2>
+                  </div>
+                  <strong>{urgentFeedback.length}</strong>
+                </div>
+                <div className="sentiment-list">
+                  {urgentFeedback.length ? (
+                    urgentFeedback.map((item) => (
+                      <button
+                        type="button"
+                        className="sentiment-feedback"
+                        key={item.id}
+                        onClick={() => setSelected(item)}
+                      >
+                        <span className="sentiment-rating"><Star fill="currentColor" /> {item.rating}</span>
+                        <span>
+                          <b>{item.locationName}</b>
+                          <small>{item.categories?.join(", ") || "Guest feedback"}</small>
+                        </span>
+                        <small>{dateLabel(item.createdAt)}</small>
+                      </button>
+                    ))
+                  ) : (
+                    <p className="sentiment-empty">No urgent cases right now.</p>
+                  )}
+                </div>
+                <div className="category-pills">
+                  <span>Top urgent categories</span>
+                  {urgentCategories.length ? (
+                    urgentCategories.map(({ name, count }) => (
+                      <button
+                        type="button"
+                        key={name}
+                        onClick={() => {
+                          setCategoryFilter(name);
+                          setStatus("all");
+                          setTab("feedback");
+                        }}
+                      >
+                        {name} <b>{count}</b>
+                      </button>
+                    ))
+                  ) : (
+                    <small>Nothing to prioritise.</small>
+                  )}
+                </div>
+              </article>
+
+              <article className="sentiment-column positive-insights">
+                <div className="sentiment-heading">
+                  <span className="sentiment-icon"><BadgeCheck /></span>
+                  <div>
+                    <p>Celebrate what works</p>
+                    <h2>Positive feedback</h2>
+                  </div>
+                  <strong>{positiveFeedback.length}</strong>
+                </div>
+                <div className="sentiment-list">
+                  {positiveFeedback.length ? (
+                    positiveFeedback.map((item) => (
+                      <button
+                        type="button"
+                        className="sentiment-feedback"
+                        key={item.id}
+                        onClick={() => setSelected(item)}
+                      >
+                        <span className="sentiment-rating"><Star fill="currentColor" /> {item.rating}</span>
+                        <span>
+                          <b>{item.locationName}</b>
+                          <small>{item.categories?.join(", ") || "Guest feedback"}</small>
+                        </span>
+                        <small>{dateLabel(item.createdAt)}</small>
+                      </button>
+                    ))
+                  ) : (
+                    <p className="sentiment-empty">Positive feedback will appear here.</p>
+                  )}
+                </div>
+                <div className="category-pills">
+                  <span>Top positive categories</span>
+                  {positiveCategories.length ? (
+                    positiveCategories.map(({ name, count }) => (
+                      <button
+                        type="button"
+                        key={name}
+                        onClick={() => {
+                          setCategoryFilter(name);
+                          setStatus("all");
+                          setTab("feedback");
+                        }}
+                      >
+                        {name} <b>{count}</b>
+                      </button>
+                    ))
+                  ) : (
+                    <small>Waiting for more feedback.</small>
+                  )}
+                </div>
+              </article>
+            </section>
             <section className="panel">
               <h2>Feedback locations</h2>
               <div className="location-icon-grid">
