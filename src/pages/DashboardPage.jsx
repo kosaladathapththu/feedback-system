@@ -581,23 +581,23 @@ export default function DashboardPage() {
         )}
         {tab === "categories" && (
           <section className="panel full">
-            <h2>Top feedback locations</h2>
+            <h2>Top feedback categories</h2>
             <div className="location-icon-grid">
-              {locationSummary.length ? (
-                locationSummary.map(({ value, label, icon: Icon, count }) => (
+              {categorySummary.length ? (
+                categorySummary.map(({ name, count }) => (
                   <button
-                    key={value}
+                    key={name}
                     type="button"
                     className="location-icon-card"
                     onClick={() => {
-                      setCategoryFilter(value);
+                      setCategoryFilter(name);
                       setStatus("all");
                       setTab("feedback");
                     }}
                   >
                     <span className="location-icon-badge">{count}</span>
-                    <Icon size={26} />
-                    <strong>{label}</strong>
+                    <ChartNoAxesCombined size={26} />
+                    <strong>{name}</strong>
                   </button>
                 ))
               ) : (
