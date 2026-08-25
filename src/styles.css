@@ -2305,6 +2305,59 @@ input:disabled {
   font-size: 11px;
 }
 
+/* Consistent case-modal actions. */
+.primary {
+  color: #fff;
+}
+
+.secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 10px 0 0 8px;
+  border: 1px solid #b9c9c1;
+  border-radius: 13px;
+  padding: 12px 15px;
+  color: #1f5749;
+  background: #f7fbf8;
+  font-weight: 800;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.secondary:hover {
+  border-color: #347360;
+  background: #eaf4ee;
+  transform: translateY(-1px);
+}
+
+.secondary svg {
+  width: 19px;
+  height: 19px;
+}
+
+.modal-backdrop {
+  background: rgba(7, 28, 23, 0.62);
+  backdrop-filter: blur(4px);
+}
+
+.modal {
+  border: 1px solid rgba(255, 255, 255, 0.74);
+  border-radius: 23px;
+  box-shadow: 0 30px 90px -32px rgba(0, 0, 0, 0.85);
+}
+
+.modal .primary {
+  margin-top: 8px;
+}
+
+@media (max-width: 520px) {
+  .secondary {
+    width: 100%;
+    margin-left: 0;
+  }
+}
+
 @media (max-width: 840px) {
   .sentiment-board {
     grid-template-columns: 1fr;
