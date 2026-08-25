@@ -11,6 +11,7 @@ import {
   Landmark,
   LayoutDashboard,
   LogOut,
+  Mail,
   MapPinned,
   MessageSquareText,
   Pencil,
@@ -199,10 +200,8 @@ export default function DashboardPage() {
         new Set(
           JSON.parse(localStorage.getItem("supun-seen-feedback") || "[]"),
         ),
-    );
+  );
   const categorySummary = useMemo(() => getCategoryCounts(feedback), [feedback]);
-  const topCategories = categorySummary.slice(0, 5);
-  const maxCategoryCount = topCategories[0]?.count || 1;
   const locationSummary = useMemo(
     () =>
       feedbackLocationZones.map((zone) => {

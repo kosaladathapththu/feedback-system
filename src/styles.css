@@ -25,14 +25,7 @@ body,
 body {
   margin: 0;
   min-width: 320px;
-  background-color: #120f0d;
-  background-image:
-    linear-gradient(rgba(12, 9, 7, 0.58), rgba(12, 9, 7, 0.72)),
-    url("/rest1.jpeg?v=20260824");
-  background-position: center center;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-attachment: scroll;
+  background: #f6f1e4;
 }
 button,
 input,
@@ -1091,8 +1084,9 @@ input:disabled {
 /* Refined management workspace */
 .dashboard {
   background:
-    linear-gradient(rgba(18, 13, 9, 0.42), rgba(18, 13, 9, 0.58)),
-    url("/rest1.jpeg?v=20260824");
+    radial-gradient(circle at 84% 8%, rgba(228, 201, 137, 0.2), transparent 25%),
+    linear-gradient(120deg, rgba(246, 244, 238, 0.95), rgba(239, 243, 238, 0.9)),
+    url("/images/customer-hospitality-background.png");
   background-position: center center;
   background-size: cover;
   background-repeat: no-repeat;
@@ -1472,7 +1466,9 @@ input:disabled {
   position: relative;
   overflow: hidden;
   padding: 38px 20px 28px;
-  background: transparent;
+  background:
+    linear-gradient(110deg, rgba(13, 42, 34, 0.82), rgba(20, 49, 40, 0.56)),
+    url("/images/customer-hospitality-background.png") center / cover no-repeat;
 }
 .guest-page:before,
 .guest-page:after {
