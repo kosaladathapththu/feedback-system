@@ -4,10 +4,13 @@ import { isFirebaseConfigured } from "./firebase/config";
 import DashboardPage from "./pages/DashboardPage";
 import FeedbackPage from "./pages/FeedbackPage";
 import LoginPage from "./pages/LoginPage";
+import TrackFeedbackPage from "./pages/TrackFeedbackPage";
 export default function App() {
   return (
     <Routes>
       <Route path="/f/:code" element={<FeedbackPage />} />
+      <Route path="/track" element={<TrackFeedbackPage />} />
+      <Route path="/track/:reference" element={<TrackFeedbackPage />} />
       <Route
         path="/login"
         element={

@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  getDoc,
   getDocs,
   limit,
   orderBy,
@@ -88,12 +89,46 @@ export async function getFeedback({
 }
 
 export async function updateFeedback(id, changes) {
-  if (!db) throw new Error("Firebase has not been configured yet.");
+  if (!db) {
+    const stored = JSON.parse(
+      localStorage.getItem("supun-preview-feedback") || "[]",
+    );
+    localStorage.setItem(
+      "supun-preview-feedback",
+      JSON.stringify(
+        stored.map((item) =>
+          item.feedbackId === id || item.id === id
+            ? { ...item, ...changes, updatedAt: new Date().toISOString() }
+            : item,
+        ),
+      ),
+    );
+    return;
+  }
   await updateDoc(doc(db, "feedback", id), {
     ...changes,
     updatedAt: serverTimestamp(),
     ...(changes.status === "resolved" ? { resolvedAt: serverTimestamp() } : {}),
   });
+}
+
+export async function getFeedbackStatus(reference) {
+  const value = reference.trim().toUpperCase();
+  if (!value) throw new Error("Enter your feedback reference number.");
+
+  if (!db) {
+    const stored = JSON.parse(
+      localStorage.getItem("supun-preview-feedback") || "[]",
+    );
+    const item = stored.find((feedback) => feedback.feedbackId === value);
+    if (!item) throw new Error("We could not find that feedback reference.");
+    return item;
+  }
+
+  const snapshot = await getDoc(doc(db, "feedbackStatus", value));
+  if (!snapshot.exists())
+    throw new Error("We could not find that feedback reference.");
+  return snapshot.data();
 }
 
 export function createAutoReplyDraft({ feedback, status, comment }) {
@@ -125,7 +160,7 @@ export function createAutoReplyDraft({ feedback, status, comment }) {
     .join("\n");
 
   return {
-    to: "feedback@supungroup.lk",
+    to: feedback?.email?.trim() || "",
     from: "feedback@supungroup.lk",
     subject,
     body,

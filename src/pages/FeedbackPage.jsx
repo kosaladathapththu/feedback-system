@@ -353,6 +353,13 @@ export default function FeedbackPage() {
             >
               <Home size={17} /> Home
             </button>
+            <button
+              className="secondary thanks-track"
+              type="button"
+              onClick={() => navigate(`/track/${reference}`)}
+            >
+              Track feedback status
+            </button>
           </div>
         )}
         {step < 5 && (

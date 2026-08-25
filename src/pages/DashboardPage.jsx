@@ -299,7 +299,7 @@ export default function DashboardPage() {
   };
   const saveCase = async (changes) => {
     try {
-      if (isFirebaseConfigured) await updateFeedback(selected.id, changes);
+      await updateFeedback(selected.id, changes);
       setFeedback((all) =>
         all.map((f) => (f.id === selected.id ? { ...f, ...changes } : f)),
       );
@@ -965,7 +965,7 @@ function CaseModal({ item, onClose, onSave }) {
         }
       >
         <MailIcon />
-        Send status reply
+        Open status reply
       </button>
     </Modal>
   );

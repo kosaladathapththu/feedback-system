@@ -12,13 +12,15 @@ service cloud.firestore {
       allow create, update, delete: if admin();
     }
     match /feedback/{id} {
-      allow create: if request.resource.data.keys().hasOnly(['feedbackId','locationId','locationName','zone','rating','categories','comment','customerName','phone','urgent','status','assignedTo','resolutionNote','createdAt','updatedAt','resolvedAt'])
+      allow create: if request.resource.data.keys().hasOnly(['feedbackId','locationId','locationName','zone','rating','categories','comment','otherDetail','customerName','email','phone','urgent','status','assignedTo','resolutionNote','createdAt','updatedAt','resolvedAt'])
         && request.resource.data.rating is int
         && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
         && request.resource.data.categories is list
         && request.resource.data.categories.size() >= 1
         && request.resource.data.comment is string && request.resource.data.comment.size() <= 1000
+        && request.resource.data.otherDetail is string && request.resource.data.otherDetail.size() <= 500
         && request.resource.data.customerName is string && request.resource.data.customerName.size() <= 100
+        && request.resource.data.email is string && request.resource.data.email.size() <= 150
         && request.resource.data.phone is string && request.resource.data.phone.size() <= 30
         && request.resource.data.urgent is bool
         && request.resource.data.status == 'open'
