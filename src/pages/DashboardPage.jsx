@@ -41,7 +41,6 @@ import Brand from "../components/Brand";
 import LoadingState from "../components/LoadingState";
 import { auth, isFirebaseConfigured } from "../firebase/config";
 import {
-  createAutoReplyDraft,
   getFeedback,
   openAutoReplyDraft,
   updateFeedback,
@@ -303,17 +302,12 @@ export default function DashboardPage() {
       setFeedback((all) =>
         all.map((f) => (f.id === selected.id ? { ...f, ...changes } : f)),
       );
-      const nextStatus = changes.status || selected.status;
-      const reply = createAutoReplyDraft({
-        feedback: { ...selected, ...changes },
-        status: nextStatus,
-        comment: changes.resolutionNote || selected.resolutionNote,
-      });
-      if (typeof window !== "undefined") {
-        window.location.href = `mailto:${reply.to}?subject=${encodeURIComponent(reply.subject)}&body=${encodeURIComponent(reply.body)}`;
-      }
       setSelected(null);
-      setNotice("Feedback record updated and auto-reply draft opened.");
+      setNotice(
+        isFirebaseConfigured
+          ? "Feedback updated. The guest will be emailed automatically when an address is available."
+          : "Feedback updated in preview mode. Automatic email requires Firebase Functions.",
+      );
     } catch (e) {
       setNotice(e.message);
     }

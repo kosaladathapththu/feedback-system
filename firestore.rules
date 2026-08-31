@@ -28,6 +28,12 @@ service cloud.firestore {
       allow read, update: if manager();
       allow delete: if admin();
     }
+    // Public tracking exposes only the sanitized document maintained by Cloud
+    // Functions. Exact-document reads are allowed; listing and client writes are not.
+    match /feedbackStatus/{id} {
+      allow get: if true;
+      allow list, create, update, delete: if false;
+    }
     match /notifications/{id} { allow read, update: if manager(); allow create: if false; allow delete: if admin(); }
     match /users/{id} { allow read: if signedIn() && (request.auth.uid == id || manager()); allow write: if admin(); }
     match /settings/{id} { allow read: if manager(); allow write: if admin(); }

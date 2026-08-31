@@ -37,6 +37,35 @@ The first administrator must be provisioned through the Firebase Console or a tr
 
 Run `npm run build`, then deploy rules and hosting with `firebase deploy --only firestore:rules,hosting`. Use separate Firebase projects and environment files for development and production.
 
+## Automatic email and feedback tracking
+
+Firebase Functions maintain a public, privacy-safe `feedbackStatus` document and
+send email when feedback is received or its status changes. Before deployment:
+
+```bash
+cd functions
+npm install
+firebase functions:secrets:set EMAIL_SMTP_URL
+firebase functions:secrets:set EMAIL_FROM
+```
+
+`EMAIL_SMTP_URL` uses the standard SMTP URL format
+`smtps://USERNAME:PASSWORD@SMTP_HOST:465`. URL-encode special characters in the
+username or password. `EMAIL_FROM` should be a verified sender, for example
+`Supun Arcade <feedback@supungroup.lk>`.
+
+Set the public production URL for links in outgoing messages:
+
+```bash
+firebase functions:config:set public.app_url="https://your-domain.example"
+```
+
+Alternatively set `PUBLIC_APP_URL` in the Functions environment. Deploy with:
+
+```bash
+firebase deploy --only functions,firestore:rules,hosting
+```
+
 ## Android and iOS apps
 
 Capacitor packages the same React application as native Android and iOS projects.
