@@ -45,6 +45,7 @@ send email when feedback is received or its status changes. Before deployment:
 ```bash
 cd functions
 npm install
+cd ..
 firebase functions:secrets:set EMAIL_SMTP_URL
 firebase functions:secrets:set EMAIL_FROM
 ```

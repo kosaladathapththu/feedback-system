@@ -4,7 +4,15 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 
 export default [
-  { ignores: ["android/**", "ios/**", "dist/**", "node_modules/**"] },
+  {
+    ignores: [
+      "android/**",
+      "ios/**",
+      "dist/**",
+      "node_modules/**",
+      "functions/node_modules/**",
+    ],
+  },
   js.configs.recommended,
   {
     files: ["src/**/*.{js,jsx}"],
@@ -19,6 +27,14 @@ export default [
       ...reactHooks.configs.recommended.rules,
       ...reactRefresh.configs.vite.rules,
       "react-hooks/set-state-in-effect": "off",
+    },
+  },
+  {
+    files: ["functions/**/*.js"],
+    languageOptions: {
+      ecmaVersion: "latest",
+      sourceType: "commonjs",
+      globals: globals.node,
     },
   },
 ];
