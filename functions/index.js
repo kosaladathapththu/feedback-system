@@ -1,7 +1,7 @@
 const { initializeApp } = require("firebase-admin/app");
 const { getFirestore, FieldValue } = require("firebase-admin/firestore");
 const { logger } = require("firebase-functions");
-const { defineSecret } = require("firebase-functions/params");
+const { defineSecret, defineString } = require("firebase-functions/params");
 const {
   onDocumentCreated,
   onDocumentUpdated,
@@ -12,6 +12,7 @@ initializeApp();
 
 const smtpUrl = defineSecret("EMAIL_SMTP_URL");
 const emailFrom = defineSecret("EMAIL_FROM");
+const publicAppUrl = defineString("PUBLIC_APP_URL", { default: "" });
 
 const trackedFields = (feedback) => ({
   feedbackId: feedback.feedbackId,
@@ -33,7 +34,7 @@ const statusLabel = (status) =>
 
 function emailMarkup(feedback, heading, message) {
   const reference = feedback.feedbackId;
-  const appUrl = (process.env.PUBLIC_APP_URL || "").replace(/\/$/, "");
+  const appUrl = publicAppUrl.value().replace(/\/$/, "");
   const trackingUrl = appUrl ? `${appUrl}/track/${reference}` : "";
   const note = feedback.resolutionNote
     ? `<p style="margin:18px 0;padding:14px;border-left:3px solid #c69845;background:#faf7ef"><strong>Team update</strong><br>${escapeHtml(feedback.resolutionNote)}</p>`

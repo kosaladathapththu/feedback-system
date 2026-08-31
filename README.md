@@ -54,13 +54,14 @@ firebase functions:secrets:set EMAIL_FROM
 username or password. `EMAIL_FROM` should be a verified sender, for example
 `Supun Arcade <feedback@supungroup.lk>`.
 
-Set the public production URL for links in outgoing messages:
+Set the public production URL for links in outgoing messages by adding a
+`functions/.env` file:
 
-```bash
-firebase functions:config:set public.app_url="https://your-domain.example"
+```env
+PUBLIC_APP_URL=https://your-domain.example
 ```
 
-Alternatively set `PUBLIC_APP_URL` in the Functions environment. Deploy with:
+Deploy with:
 
 ```bash
 firebase deploy --only functions,firestore:rules,hosting
