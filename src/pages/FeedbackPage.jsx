@@ -123,30 +123,26 @@ export default function FeedbackPage() {
     <main className="guest-page">
       <header className="guest-header">
         <Brand />
-        <span>Share your experience</span>
+        <span>Guest feedback</span>
       </header>
       <section className="form-card">
         {step < 5 && (
           <>
             <div className="guest-spotlight">
               <div>
-                <p className="eyebrow">Guest experience survey</p>
+                <p className="eyebrow">You are reviewing</p>
                 <h2>{location.name}</h2>
               </div>
-              <span>{location.code}</span>
+              <span><MapPin size={13} /> {location.code}</span>
             </div>
             <div className="progress" aria-label={`Step ${step} of 4`}>
               {[1, 2, 3, 4].map((n) => (
                 <span key={n} className={n <= step ? "active" : ""} />
               ))}
             </div>
-            <div className="step-count">Step {step} of 4</div>
-            <div className="location">
-              <MapPin size={18} />
-              <div>
-                <strong>{location.name}</strong>
-                <small>{location.code}</small>
-              </div>
+            <div className="step-count">
+              <span>Step {step} of 4</span>
+              <span>{Math.round((step / 4) * 100)}% complete</span>
             </div>
           </>
         )}
