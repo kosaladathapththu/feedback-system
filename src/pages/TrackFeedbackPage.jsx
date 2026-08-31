@@ -29,6 +29,8 @@ const statusCopy = {
   },
 };
 
+const statusOrder = ["open", "in_progress", "resolved"];
+
 const formatDate = (value) => {
   const date = value?.toDate ? value.toDate() : new Date(value);
   return Number.isNaN(date.getTime()) ? "Recently" : date.toLocaleDateString();
@@ -77,6 +79,10 @@ export default function TrackFeedbackPage() {
 
   const status = statusCopy[feedback?.status] || statusCopy.open;
   const StatusIcon = status.Icon;
+  const currentStatusIndex = Math.max(
+    0,
+    statusOrder.indexOf(feedback?.status || "open"),
+  );
 
   return (
     <main className="guest-page track-page">
@@ -112,6 +118,18 @@ export default function TrackFeedbackPage() {
               <p className="eyebrow">{status.title}</p>
               <h2>{status.detail}</h2>
             </div>
+            <ol className="status-timeline" aria-label="Feedback progress">
+              {statusOrder.map((item, index) => {
+                const itemStatus = statusCopy[item];
+                const StepIcon = itemStatus.Icon;
+                return (
+                  <li className={index <= currentStatusIndex ? "complete" : ""} key={item}>
+                    <span><StepIcon /></span>
+                    <strong>{itemStatus.title}</strong>
+                  </li>
+                );
+              })}
+            </ol>
             <dl>
               <div><dt>Reference</dt><dd>{feedback.feedbackId}</dd></div>
               <div><dt>Location</dt><dd><MapPin size={14} /> {feedback.locationName}</dd></div>
