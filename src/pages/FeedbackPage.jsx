@@ -245,7 +245,7 @@ export default function FeedbackPage() {
             </div>
             {form.categories.includes(cats.at(-1)) && (
               <label>
-                Please tell us more <span>optional but helpful</span>
+                Please tell us more <span>required</span>
                 <textarea
                   value={form.otherDetail}
                   onChange={(e) => patch({ otherDetail: e.target.value })}
@@ -269,7 +269,7 @@ export default function FeedbackPage() {
                 value={form.comment}
                 maxLength="1000"
                 onChange={(e) => patch({ comment: e.target.value })}
-                placeholder="Tell us what happened…"
+                placeholder={feedbackCopy.placeholder}
               />
               <small className="char-count">{form.comment.length}/1000</small>
             </label>
