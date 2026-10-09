@@ -31,6 +31,14 @@ const initial = {
   urgent: false,
 };
 const ratingLabels = ["", "Poor", "Fair", "Good", "Very good", "Excellent"];
+const ratingMessages = [
+  null,
+  "We’re sorry. Tell us what needs urgent attention.",
+  "Thank you for being honest. Help us put things right.",
+  "A balanced experience. Show us what we can improve.",
+  "We’re glad you enjoyed it. Tell us what stood out.",
+  "Wonderful! We’d love to know what made it exceptional.",
+];
 export default function FeedbackPage() {
   const { code = "" } = useParams();
   const [location, setLocation] = useState(null);
@@ -62,7 +70,7 @@ export default function FeedbackPage() {
   const next = () => {
     if (step === 1 && !form.rating)
       return setErrors({ rating: "Choose a rating to continue." });
-    if (step === 2 && !form.categories.length)
+    if (step === 2 && form.rating <= 3 && !form.categories.length)
       return setErrors({ categories: "Choose at least one category." });
     if (
       step === 2 &&
@@ -144,7 +152,7 @@ export default function FeedbackPage() {
     positive: {
       eyebrow: "Tell us more",
       heading: "What stood out?",
-      supporting: "Select everything you enjoyed.",
+      supporting: "Select anything you enjoyed, or continue without selecting.",
       detailHeading: "What did you enjoy most?",
       detailPrompt: "Share what made your experience memorable.",
       placeholder: "Tell us what made your experience special.",
@@ -185,28 +193,47 @@ export default function FeedbackPage() {
               Your honest feedback helps us make every stay and visit truly
               exceptional.
             </p>
-            <div className="rating-panel" aria-label="Rating">
+            <div className={`rating-panel rating-${ratingBand}`} aria-label="Rating">
+              <p className="rating-instruction">Tap a star to rate your experience</p>
               <div className="stars">
                 {[1, 2, 3, 4, 5].map((n) => (
                   <button
                     aria-label={`${n} stars - ${ratingLabels[n]}`}
+                    aria-pressed={form.rating === n}
+                    className={`rating-option rating-tone-${n <= 2 ? "low" : n === 3 ? "mid" : "high"} ${form.rating === n ? "selected" : ""}`}
                     key={n}
+                    type="button"
                     onClick={() => {
                       patch({
                         rating: n,
                         categories: n === form.rating ? form.categories : [],
                         otherDetail: n === form.rating ? form.otherDetail : "",
+                        urgent: n <= 2 ? form.urgent : false,
                       });
                       setErrors({});
                     }}
                   >
+                    <span className="rating-number">{n}</span>
                     <Star className={n <= form.rating ? "filled" : ""} />
+                    <span className="rating-option-label">{ratingLabels[n]}</span>
                   </button>
                 ))}
               </div>
-              <p className={`rating-label ${form.rating ? "chosen" : ""}`}>
-                {form.rating ? ratingLabels[form.rating] : "Select a rating"}
-              </p>
+              <div className={`rating-result ${form.rating ? "chosen" : ""}`} aria-live="polite">
+                <span className="rating-result-star"><Star size={18} /></span>
+                <span>
+                  <strong>
+                    {form.rating
+                      ? `${form.rating} ${form.rating === 1 ? "star" : "stars"} · ${ratingLabels[form.rating]}`
+                      : "Your rating matters"}
+                  </strong>
+                  <small>
+                    {form.rating
+                      ? ratingMessages[form.rating]
+                      : "Choose the option that best matches your visit."}
+                  </small>
+                </span>
+              </div>
             </div>
             {errors.rating && <p className="field-error">{errors.rating}</p>}
           </div>
@@ -318,17 +345,19 @@ export default function FeedbackPage() {
                 <small className="field-error">{errors.phone}</small>
               )}
             </label>
-            <label className="urgent">
-              <span>
-                <strong>Needs urgent attention</strong>
-                <small>Alert our management team promptly</small>
-              </span>
-              <input
-                type="checkbox"
-                checked={form.urgent}
-                onChange={(e) => patch({ urgent: e.target.checked })}
-              />
-            </label>
+            {form.rating <= 2 && (
+              <label className="urgent">
+                <span>
+                  <strong>Needs urgent attention</strong>
+                  <small>Alert our management team promptly</small>
+                </span>
+                <input
+                  type="checkbox"
+                  checked={form.urgent}
+                  onChange={(e) => patch({ urgent: e.target.checked })}
+                />
+              </label>
+            )}
           </div>
         )}
         {step === 4 && (
