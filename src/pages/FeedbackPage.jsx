@@ -264,14 +264,22 @@ export default function FeedbackPage() {
             <h1>{feedbackCopy.detailHeading}</h1>
             <p>{feedbackCopy.detailPrompt}</p>
             <label>
-              Comment <span>optional</span>
+              Comment <span>{form.rating <= 3 ? "required" : "optional"}</span>
               <textarea
                 value={form.comment}
                 maxLength="1000"
-                onChange={(e) => patch({ comment: e.target.value })}
+                required={form.rating <= 3}
+                aria-invalid={Boolean(errors.comment)}
+                onChange={(e) => {
+                  patch({ comment: e.target.value });
+                  if (errors.comment) setErrors((current) => ({ ...current, comment: "" }));
+                }}
                 placeholder={feedbackCopy.placeholder}
               />
               <small className="char-count">{form.comment.length}/1000</small>
+              {errors.comment && (
+                <small className="field-error">{errors.comment}</small>
+              )}
             </label>
             <div className="field-row">
               <label>

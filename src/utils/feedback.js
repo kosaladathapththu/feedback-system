@@ -113,6 +113,8 @@ export function makeReference(date = new Date()) {
 
 export function validateDetails(values) {
   const errors = {};
+  if (values.rating <= 3 && !values.comment.trim())
+    errors.comment = "Please add a comment so we can understand what needs improvement.";
   if (values.comment.length > 1000)
     errors.comment = "Keep the comment under 1,000 characters.";
   if (values.customerName.length > 100)
