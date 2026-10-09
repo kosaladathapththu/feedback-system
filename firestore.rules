@@ -16,8 +16,9 @@ service cloud.firestore {
         && request.resource.data.rating is int
         && request.resource.data.rating >= 1 && request.resource.data.rating <= 5
         && request.resource.data.categories is list
-        && request.resource.data.categories.size() >= 1
+        && (request.resource.data.rating >= 4 || request.resource.data.categories.size() >= 1)
         && request.resource.data.comment is string && request.resource.data.comment.size() <= 1000
+        && (request.resource.data.rating >= 4 || request.resource.data.comment.size() > 0)
         && request.resource.data.otherDetail is string && request.resource.data.otherDetail.size() <= 500
         && request.resource.data.customerName is string && request.resource.data.customerName.size() <= 100
         && request.resource.data.email is string && request.resource.data.email.size() <= 150

@@ -113,7 +113,8 @@ export async function updateFeedback(id, changes) {
 }
 
 export async function getFeedbackStatus(reference) {
-  const value = reference.trim().toUpperCase();
+  const entered = reference.trim().toUpperCase().replaceAll(" ", "");
+  const value = entered && !entered.startsWith("FB-") ? `FB-${entered}` : entered;
   if (!value) throw new Error("Enter your feedback reference number.");
 
   if (!db) {

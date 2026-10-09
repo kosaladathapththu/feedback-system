@@ -682,6 +682,12 @@ input:disabled {
   }
 }
 
+.track-id-hint {
+  margin: 8px 2px 0;
+  color: #7b8781;
+  font-size: 11px;
+}
+
 .location-card.clickable {
   cursor: pointer;
 }

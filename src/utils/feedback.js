@@ -105,10 +105,11 @@ export function getCategoryCounts(feedback = []) {
     .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
 }
 
-export function makeReference(date = new Date()) {
-  const day = date.toISOString().slice(0, 10).replaceAll("-", "");
-  const suffix = crypto.getRandomValues(new Uint32Array(1))[0] % 10000;
-  return `FB-${day}-${String(suffix).padStart(4, "0")}`;
+export function makeReference() {
+  const alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
+  const values = crypto.getRandomValues(new Uint8Array(7));
+  const code = Array.from(values, (value) => alphabet[value % alphabet.length]).join("");
+  return `FB-${code}`;
 }
 
 export function validateDetails(values) {
