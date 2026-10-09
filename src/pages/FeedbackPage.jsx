@@ -1,11 +1,16 @@
 import { useEffect, useState } from "react";
 import {
   AlertCircle,
+  Annoyed,
   ArrowLeft,
   ArrowRight,
   Check,
+  Frown,
   Home,
+  Laugh,
   MapPin,
+  Meh,
+  Smile,
   Star,
 } from "lucide-react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -31,6 +36,13 @@ const initial = {
   urgent: false,
 };
 const ratingLabels = ["", "Poor", "Fair", "Good", "Very good", "Excellent"];
+const ratingOptions = [
+  { value: 1, label: "Poor", icon: Annoyed },
+  { value: 2, label: "Fair", icon: Frown },
+  { value: 3, label: "Good", icon: Meh },
+  { value: 4, label: "Very good", icon: Smile },
+  { value: 5, label: "Excellent", icon: Laugh },
+];
 export default function FeedbackPage() {
   const { code = "" } = useParams();
   const [location, setLocation] = useState(null);
@@ -185,12 +197,17 @@ export default function FeedbackPage() {
               Your honest feedback helps us make every stay and visit truly
               exceptional.
             </p>
-            <div className="rating-panel" aria-label="Rating">
-              <div className="stars">
-                {[1, 2, 3, 4, 5].map((n) => (
+            <div className="rating-panel modern-rating" aria-label="Rating">
+              <div className="rating-scale-labels" aria-hidden="true">
+                <span>Needs improvement</span>
+                <span>Excellent</span>
+              </div>
+              <div className="rating-choices">
+                {ratingOptions.map(({ value: n, label, icon: RatingIcon }) => (
                   <button
-                    aria-label={`${n} stars - ${ratingLabels[n]}`}
+                    aria-label={`${n} stars - ${label}`}
                     aria-pressed={form.rating === n}
+                    className={form.rating === n ? "selected" : ""}
                     key={n}
                     type="button"
                     onClick={() => {
@@ -203,13 +220,18 @@ export default function FeedbackPage() {
                       setErrors({});
                     }}
                   >
-                    <Star className={n <= form.rating ? "filled" : ""} />
+                    <span className="rating-icon"><RatingIcon /></span>
+                    <strong>{label}</strong>
+                    <small>{n} {n === 1 ? "star" : "stars"}</small>
                   </button>
                 ))}
               </div>
-              <p className={`rating-label ${form.rating ? "chosen" : ""}`}>
-                {form.rating ? ratingLabels[form.rating] : "Select a rating"}
-              </p>
+              <div className={`rating-confirmation ${form.rating ? "visible" : ""}`}>
+                <Star className="filled" size={17} />
+                {form.rating
+                  ? `${ratingLabels[form.rating]} — thank you for sharing.`
+                  : "Choose the response that feels right."}
+              </div>
             </div>
             {errors.rating && <p className="field-error">{errors.rating}</p>}
           </div>
