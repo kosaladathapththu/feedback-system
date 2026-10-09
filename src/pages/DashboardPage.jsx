@@ -211,6 +211,10 @@ export default function DashboardPage() {
         .slice(0, 3),
     [feedback],
   );
+  const urgentActions = useMemo(
+    () => feedback.filter((item) => item.urgent && item.status !== "resolved"),
+    [feedback],
+  );
   const positiveFeedback = useMemo(
     () => feedback.filter((item) => item.rating >= 4).slice(0, 3),
     [feedback],
@@ -355,6 +359,7 @@ export default function DashboardPage() {
   const nav = [
     ["overview", "Overview", LayoutDashboard],
     ["feedback", "Feedback", MessageSquareText],
+    ["urgent", "Urgent actions", TriangleAlert],
     ["analytics", "Analytics", ChartNoAxesCombined],
     ["categories", "Top feedback category", ChartNoAxesCombined],
     ["locations", "Locations", MapPinned],
@@ -373,6 +378,11 @@ export default function DashboardPage() {
             >
               <Icon />
               {label}
+              {id === "urgent" && urgentActions.length > 0 && (
+                <span className="nav-count" aria-label={`${urgentActions.length} urgent actions`}>
+                  {urgentActions.length > 99 ? "99+" : urgentActions.length}
+                </span>
+              )}
             </button>
           ))}
         </nav>
@@ -396,6 +406,8 @@ export default function DashboardPage() {
             <h1>
               {tab === "overview"
                 ? "Guest experience overview"
+                : tab === "urgent"
+                  ? "Urgent actions"
                 : tab[0].toUpperCase() + tab.slice(1)}
             </h1>
           </div>
@@ -487,8 +499,7 @@ export default function DashboardPage() {
                 detail="Need follow-up"
                 Icon={MessageSquareText}
                 onClick={() => {
-                  setStatus("open");
-                  setTab("feedback");
+                  setTab("urgent");
                 }}
               />
               <Metric
@@ -700,6 +711,20 @@ export default function DashboardPage() {
               </div>
             </div>
             <FeedbackTable rows={filtered} onSelect={setSelected} />
+          </section>
+        )}
+        {tab === "urgent" && (
+          <section className="panel full urgent-actions-panel">
+            <div className="urgent-actions-heading">
+              <span><TriangleAlert /></span>
+              <div>
+                <p className="eyebrow">Priority queue</p>
+                <h2>Urgent actions</h2>
+                <p>Feedback marked for immediate management attention.</p>
+              </div>
+              <strong>{urgentActions.length}</strong>
+            </div>
+            <FeedbackTable rows={urgentActions} onSelect={setSelected} />
           </section>
         )}
         {tab === "analytics" && (
