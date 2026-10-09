@@ -31,14 +31,6 @@ const initial = {
   urgent: false,
 };
 const ratingLabels = ["", "Poor", "Fair", "Good", "Very good", "Excellent"];
-const ratingMessages = [
-  null,
-  "We’re sorry. Tell us what needs urgent attention.",
-  "Thank you for being honest. Help us put things right.",
-  "A balanced experience. Show us what we can improve.",
-  "We’re glad you enjoyed it. Tell us what stood out.",
-  "Wonderful! We’d love to know what made it exceptional.",
-];
 export default function FeedbackPage() {
   const { code = "" } = useParams();
   const [location, setLocation] = useState(null);
@@ -193,14 +185,12 @@ export default function FeedbackPage() {
               Your honest feedback helps us make every stay and visit truly
               exceptional.
             </p>
-            <div className={`rating-panel rating-${ratingBand}`} aria-label="Rating">
-              <p className="rating-instruction">Tap a star to rate your experience</p>
+            <div className="rating-panel" aria-label="Rating">
               <div className="stars">
                 {[1, 2, 3, 4, 5].map((n) => (
                   <button
                     aria-label={`${n} stars - ${ratingLabels[n]}`}
                     aria-pressed={form.rating === n}
-                    className={`rating-option rating-tone-${n <= 2 ? "low" : n === 3 ? "mid" : "high"} ${form.rating === n ? "selected" : ""}`}
                     key={n}
                     type="button"
                     onClick={() => {
@@ -213,27 +203,13 @@ export default function FeedbackPage() {
                       setErrors({});
                     }}
                   >
-                    <span className="rating-number">{n}</span>
                     <Star className={n <= form.rating ? "filled" : ""} />
-                    <span className="rating-option-label">{ratingLabels[n]}</span>
                   </button>
                 ))}
               </div>
-              <div className={`rating-result ${form.rating ? "chosen" : ""}`} aria-live="polite">
-                <span className="rating-result-star"><Star size={18} /></span>
-                <span>
-                  <strong>
-                    {form.rating
-                      ? `${form.rating} ${form.rating === 1 ? "star" : "stars"} · ${ratingLabels[form.rating]}`
-                      : "Your rating matters"}
-                  </strong>
-                  <small>
-                    {form.rating
-                      ? ratingMessages[form.rating]
-                      : "Choose the option that best matches your visit."}
-                  </small>
-                </span>
-              </div>
+              <p className={`rating-label ${form.rating ? "chosen" : ""}`}>
+                {form.rating ? ratingLabels[form.rating] : "Select a rating"}
+              </p>
             </div>
             {errors.rating && <p className="field-error">{errors.rating}</p>}
           </div>
