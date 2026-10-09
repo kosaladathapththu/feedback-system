@@ -106,9 +106,8 @@ export function getCategoryCounts(feedback = []) {
 }
 
 export function makeReference() {
-  const alphabet = "23456789ABCDEFGHJKLMNPQRSTUVWXYZ";
-  const values = crypto.getRandomValues(new Uint8Array(7));
-  const code = Array.from(values, (value) => alphabet[value % alphabet.length]).join("");
+  const value = crypto.getRandomValues(new Uint32Array(1))[0];
+  const code = 100000 + (value % 900000);
   return `FB-${code}`;
 }
 

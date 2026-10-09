@@ -104,7 +104,7 @@ export default function TrackFeedbackPage() {
             aria-label="Feedback reference number"
             value={reference}
             onChange={(event) => setReference(event.target.value.toUpperCase())}
-            placeholder="FB-7K2M9QX"
+            placeholder="FB-482731"
             autoComplete="off"
             spellCheck="false"
           />
@@ -112,7 +112,7 @@ export default function TrackFeedbackPage() {
             <Search size={17} /> {loading ? "Checking..." : "Check status"}
           </button>
         </form>
-        <p className="track-id-hint">Enter the short ID shown after submitting, with or without “FB-”.</p>
+        <p className="track-id-hint">Enter the six-digit number shown after submitting, with or without “FB-”.</p>
         {error && <p className="track-error">{error}</p>}
         {feedback && (
           <div className={`status-result ${feedback.status || "open"}`}>
