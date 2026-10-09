@@ -188,17 +188,22 @@ export default function FeedbackPage() {
                   <button
                     className={on ? "selected" : ""}
                     key={cat}
-                    onClick={() =>
+                    type="button"
+                    aria-pressed={on}
+                    onClick={() => {
+                      setErrors({});
                       patch({
                         categories: on
                           ? form.categories.filter((x) => x !== cat)
                           : [...form.categories, cat],
-                        otherDetail:
-                          cat === "Other" && !on ? form.otherDetail : form.otherDetail,
-                      })
-                    }
+                        otherDetail: cat === "Other" && on ? "" : form.otherDetail,
+                      });
+                    }}
                   >
-                    {on && <Check size={16} />} {cat}
+                    <span className="chip-check" aria-hidden="true">
+                      {on && <Check size={14} strokeWidth={3} />}
+                    </span>
+                    <span>{cat}</span>
                   </button>
                 );
               })}

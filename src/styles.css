@@ -1972,6 +1972,31 @@ input:disabled {
   border-color: #165244;
 }
 
+.chips button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.chip-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  flex: 0 0 19px;
+  border: 1.5px solid #9da9a3;
+  border-radius: 5px;
+  color: #165244;
+  background: #fff;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.chips button.selected .chip-check {
+  border-color: #fff;
+  background: #fff;
+}
+
 .step label {
   color: #315247;
 }
