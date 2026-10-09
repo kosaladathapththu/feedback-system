@@ -194,6 +194,7 @@ export default function DashboardPage() {
     [search, setSearch] = useState(""),
     [status, setStatus] = useState("all"),
     [categoryFilter, setCategoryFilter] = useState("all"),
+    [locationFilter, setLocationFilter] = useState("all"),
     [notice, setNotice] = useState(""),
     [showNotifications, setShowNotifications] = useState(false),
     [seenFeedback, setSeenFeedback] = useState(
@@ -275,12 +276,30 @@ export default function DashboardPage() {
           (status === "all" || f.status === status) &&
           (categoryFilter === "all" ||
             (f.categories || []).includes(categoryFilter)) &&
+          (locationFilter === "all" || f.locationId === locationFilter) &&
           `${f.feedbackId} ${f.locationName} ${f.comment} ${f.categories?.join(" ")}`
             .toLowerCase()
             .includes(search.toLowerCase()),
       ),
-    [feedback, status, categoryFilter, search],
+    [feedback, status, categoryFilter, locationFilter, search],
   );
+  const selectedLocation = locations.find((loc) => loc.code === locationFilter);
+  const selectedLocationFeedback = feedback.filter(
+    (item) => item.locationId === locationFilter,
+  );
+  const selectedLocationAverage = selectedLocationFeedback.length
+    ? (
+        selectedLocationFeedback.reduce((sum, item) => sum + item.rating, 0) /
+        selectedLocationFeedback.length
+      ).toFixed(1)
+    : "—";
+  const showLocationRatings = (loc) => {
+    setLocationFilter(loc.code);
+    setStatus("all");
+    setCategoryFilter("all");
+    setSearch("");
+    setTab("feedback");
+  };
   const avg = feedback.length
       ? (feedback.reduce((n, f) => n + f.rating, 0) / feedback.length).toFixed(
           1,
@@ -620,6 +639,25 @@ export default function DashboardPage() {
         )}
         {tab === "feedback" && (
           <section className="panel full">
+            {selectedLocation && (
+              <div className="location-rating-summary">
+                <div>
+                  <MapPinned />
+                  <span>
+                    <small>Ratings for</small>
+                    <strong>{selectedLocation.name}</strong>
+                  </span>
+                </div>
+                <div className="location-rating-score">
+                  <Star />
+                  <strong>{selectedLocationAverage}</strong>
+                  <small>{selectedLocationFeedback.length} responses</small>
+                </div>
+                <button type="button" onClick={() => setLocationFilter("all")}>
+                  View all locations
+                </button>
+              </div>
+            )}
             <div className="toolbar">
               <div className="search">
                 <Search />
@@ -630,6 +668,15 @@ export default function DashboardPage() {
                 />
               </div>
               <div className="filter-row">
+                <select
+                  value={locationFilter}
+                  onChange={(e) => setLocationFilter(e.target.value)}
+                >
+                  <option value="all">All locations</option>
+                  {locations.map((loc) => (
+                    <option key={loc.id} value={loc.code}>{loc.name}</option>
+                  ))}
+                </select>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
@@ -750,7 +797,20 @@ export default function DashboardPage() {
             </div>
             <div className="location-grid">
               {locations.map((loc) => (
-                <article className="location-card" key={loc.id}>
+                <article
+                  className="location-card clickable"
+                  key={loc.id}
+                  role="button"
+                  tabIndex="0"
+                  title={`View ratings for ${loc.name}`}
+                  onClick={() => showLocationRatings(loc)}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter" || event.key === " ") {
+                      event.preventDefault();
+                      showLocationRatings(loc);
+                    }
+                  }}
+                >
                   <MapPinned />
                   <span
                     className={loc.active ? "status active-status" : "status"}
@@ -762,15 +822,31 @@ export default function DashboardPage() {
                     {loc.code} · {zoneLabels[loc.zone] || loc.zone} · {loc.floor || "—"}
                   </p>
                   <button
+                    className="text-button view-ratings-button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      showLocationRatings(loc);
+                    }}
+                  >
+                    <Star />
+                    View ratings
+                  </button>
+                  <button
                     className="text-button"
-                    onClick={() => setLocationForm(loc)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setLocationForm(loc);
+                    }}
                   >
                     <Pencil />
                     Edit
                   </button>
                   <button
                     className="text-button"
-                    onClick={() => setLocationForm({ ...loc, showQr: true })}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setLocationForm({ ...loc, showQr: true });
+                    }}
                   >
                     <QrCode />
                     QR code

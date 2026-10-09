@@ -222,12 +222,10 @@ export default function FeedbackPage() {
                   >
                     <span className="rating-icon"><RatingIcon /></span>
                     <strong>{label}</strong>
-                    <small>{n} {n === 1 ? "star" : "stars"}</small>
                   </button>
                 ))}
               </div>
               <div className={`rating-confirmation ${form.rating ? "visible" : ""}`}>
-                <Star className="filled" size={17} />
                 {form.rating
                   ? `${ratingLabels[form.rating]} — thank you for sharing.`
                   : "Choose the response that feels right."}
@@ -288,6 +286,17 @@ export default function FeedbackPage() {
             <p className="eyebrow">The details</p>
             <h1>{feedbackCopy.detailHeading}</h1>
             <p>{feedbackCopy.detailPrompt}</p>
+            <div className="comment-rating" aria-label={`Your rating: ${form.rating} out of 5`}>
+              <span>
+                <small>Your rating</small>
+                <strong>{ratingLabels[form.rating]}</strong>
+              </span>
+              <div aria-hidden="true">
+                {[1, 2, 3, 4, 5].map((n) => (
+                  <Star key={n} className={n <= form.rating ? "filled" : ""} />
+                ))}
+              </div>
+            </div>
             <label>
               Comment <span>{form.rating <= 3 ? "required" : "optional"}</span>
               <textarea
