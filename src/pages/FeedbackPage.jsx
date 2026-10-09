@@ -5,11 +5,13 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
+  Copy,
   Frown,
   Home,
   Laugh,
   MapPin,
   Meh,
+  Search,
   Smile,
   Star,
 } from "lucide-react";
@@ -53,6 +55,8 @@ export default function FeedbackPage() {
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [reference, setReference] = useState("");
+  const [trackingReference, setTrackingReference] = useState("");
+  const [copied, setCopied] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
     let live = true;
@@ -97,6 +101,7 @@ export default function FeedbackPage() {
     try {
       await submitFeedback(location, form, ref);
       setReference(ref);
+      setTrackingReference(ref);
       setStep(5);
     } catch (e) {
       setError(
@@ -403,10 +408,26 @@ export default function FeedbackPage() {
             <p className="eyebrow">Feedback received</p>
             <h1>Thank you.</h1>
             <p>Your feedback has been shared with our team.</p>
-            <div className="reference">
-              <small>Reference number</small>
-              <strong>{reference}</strong>
-            </div>
+            {form.rating <= 3 && (
+              <div className="reference reference-with-copy">
+                <span>
+                  <small>Tracking number</small>
+                  <strong>{reference}</strong>
+                </span>
+                <button
+                  type="button"
+                  aria-label="Copy tracking number"
+                  onClick={async () => {
+                    await navigator.clipboard.writeText(reference);
+                    setCopied(true);
+                    window.setTimeout(() => setCopied(false), 1800);
+                  }}
+                >
+                  {copied ? <Check size={16} /> : <Copy size={16} />}
+                  {copied ? "Copied" : "Copy"}
+                </button>
+              </div>
+            )}
             <div className="review">
               <span>
                 Location <b>{location.name}</b>
@@ -423,23 +444,44 @@ export default function FeedbackPage() {
                 </span>
               )}
             </div>
+            {form.rating <= 3 && (
+              <form
+                className="receipt-tracking"
+                onSubmit={(event) => {
+                  event.preventDefault();
+                  if (trackingReference.trim())
+                    navigate(`/track/${trackingReference.trim().toUpperCase()}`);
+                }}
+              >
+                <label htmlFor="receipt-tracking-id">Track feedback progress</label>
+                <p>Enter your tracking number to see its current status.</p>
+                <div>
+                  <input
+                    id="receipt-tracking-id"
+                    value={trackingReference}
+                    onChange={(event) => setTrackingReference(event.target.value.toUpperCase())}
+                    placeholder="FB-482731"
+                    autoComplete="off"
+                    spellCheck="false"
+                  />
+                  <button className="primary" type="submit" disabled={!trackingReference.trim()}>
+                    <Search size={17} /> Search progress
+                  </button>
+                </div>
+              </form>
+            )}
             <button
               className="primary thanks-home"
               onClick={() => {
                 setForm(initial);
                 setStep(1);
                 setReference("");
+                setTrackingReference("");
+                setCopied(false);
                 navigate(`/f/${location.code}`);
               }}
             >
               <Home size={17} /> Home
-            </button>
-            <button
-              className="secondary thanks-track"
-              type="button"
-              onClick={() => navigate(`/track/${reference}`)}
-            >
-              Track feedback status
             </button>
           </div>
         )}

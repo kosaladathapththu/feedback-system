@@ -444,6 +444,35 @@ button {
   font-size: 18px;
   color: var(--ink);
 }
+
+.reference-with-copy {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.reference-with-copy > span {
+  display: flex;
+  flex-direction: column;
+}
+
+.reference-with-copy button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 11px;
+  border: 1px solid rgba(32, 87, 70, 0.22);
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.68);
+  color: #205746;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.reference-with-copy button:hover {
+  background: #fff;
+}
 .privacy {
   text-align: center;
   font-size: 11px;
@@ -2732,6 +2761,50 @@ input:disabled {
   margin: 10px auto 0;
 }
 
+.receipt-tracking {
+  margin: 20px 0 4px;
+  padding: 16px;
+  border: 1px solid #dce5df;
+  border-radius: 15px;
+  background: #f5f9f6;
+  text-align: left;
+}
+
+.receipt-tracking > label {
+  color: #1e5545;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.receipt-tracking > p {
+  margin: 3px 0 11px;
+  color: #78837d;
+  font-size: 11px;
+}
+
+.receipt-tracking > div {
+  display: flex;
+  gap: 9px;
+}
+
+.receipt-tracking input {
+  min-width: 0;
+  flex: 1;
+  padding: 11px 13px;
+  border: 1px solid #d4ddd8;
+  border-radius: 10px;
+  background: #fff;
+  color: #173e33;
+  font: inherit;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+}
+
+.receipt-tracking .primary {
+  min-width: 160px;
+  justify-content: center;
+}
+
 @media (max-width: 600px) {
   .track-card {
     padding: 26px 20px;
@@ -2743,6 +2816,14 @@ input:disabled {
   }
 
   .track-search .primary {
+    width: 100%;
+  }
+
+  .receipt-tracking > div {
+    flex-direction: column;
+  }
+
+  .receipt-tracking .primary {
     width: 100%;
   }
 
