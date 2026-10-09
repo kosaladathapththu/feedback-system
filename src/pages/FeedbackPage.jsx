@@ -15,6 +15,7 @@ import { submitFeedback } from "../services/feedbackService";
 import { getLocationByCode } from "../services/locationService";
 import {
   categoriesByZone,
+  getRatingBand,
   makeReference,
   validateDetails,
 } from "../utils/feedback";
@@ -65,7 +66,9 @@ export default function FeedbackPage() {
       return setErrors({ categories: "Choose at least one category." });
     if (
       step === 2 &&
-      form.categories.includes("Other") &&
+      form.categories.some((category) =>
+        ["Other issue", "Other suggestion", "Something else"].includes(category),
+      ) &&
       !form.otherDetail.trim()
     )
       return setErrors({
@@ -118,7 +121,35 @@ export default function FeedbackPage() {
         </section>
       </main>
     );
-  const cats = categoriesByZone[location.zone] || categoriesByZone.apartment;
+  const ratingBand = getRatingBand(form.rating);
+  const zoneCategories = categoriesByZone[location.zone] || categoriesByZone.apartment;
+  const cats = zoneCategories[ratingBand];
+  const feedbackCopy = {
+    negative: {
+      eyebrow: "Help us put it right",
+      heading: "What went wrong?",
+      supporting: "Select every issue that affected your experience.",
+      detailHeading: "Tell us what happened",
+      detailPrompt: "Share any details that can help us resolve the issue.",
+      placeholder: "What happened, and how could we make it right?",
+    },
+    moderate: {
+      eyebrow: "Help us improve",
+      heading: "What could be better?",
+      supporting: "Select everything that could improve your experience.",
+      detailHeading: "How can we improve?",
+      detailPrompt: "Tell us what would have made your experience better.",
+      placeholder: "What should we improve for your next visit?",
+    },
+    positive: {
+      eyebrow: "Tell us more",
+      heading: "What stood out?",
+      supporting: "Select everything you enjoyed.",
+      detailHeading: "What did you enjoy most?",
+      detailPrompt: "Share what made your experience memorable.",
+      placeholder: "Tell us what made your experience special.",
+    },
+  }[ratingBand];
   return (
     <main className="guest-page">
       <header className="guest-header">
@@ -161,7 +192,11 @@ export default function FeedbackPage() {
                     aria-label={`${n} stars - ${ratingLabels[n]}`}
                     key={n}
                     onClick={() => {
-                      patch({ rating: n });
+                      patch({
+                        rating: n,
+                        categories: n === form.rating ? form.categories : [],
+                        otherDetail: n === form.rating ? form.otherDetail : "",
+                      });
                       setErrors({});
                     }}
                   >
@@ -178,9 +213,9 @@ export default function FeedbackPage() {
         )}
         {step === 2 && (
           <div className="step premium-step">
-            <p className="eyebrow">Tell us more</p>
-            <h1>What stood out?</h1>
-            <p>Select everything that applies.</p>
+            <p className="eyebrow">{feedbackCopy.eyebrow}</p>
+            <h1>{feedbackCopy.heading}</h1>
+            <p>{feedbackCopy.supporting}</p>
             <div className="chips">
               {cats.map((cat) => {
                 const on = form.categories.includes(cat);
@@ -196,7 +231,7 @@ export default function FeedbackPage() {
                         categories: on
                           ? form.categories.filter((x) => x !== cat)
                           : [...form.categories, cat],
-                        otherDetail: cat === "Other" && on ? "" : form.otherDetail,
+                        otherDetail: cat === cats.at(-1) && on ? "" : form.otherDetail,
                       });
                     }}
                   >
@@ -208,7 +243,7 @@ export default function FeedbackPage() {
                 );
               })}
             </div>
-            {form.categories.includes("Other") && (
+            {form.categories.includes(cats.at(-1)) && (
               <label>
                 Please tell us more <span>optional but helpful</span>
                 <textarea
@@ -226,7 +261,8 @@ export default function FeedbackPage() {
         {step === 3 && (
           <div className="step premium-step">
             <p className="eyebrow">The details</p>
-            <h1>Anything else to share?</h1>
+            <h1>{feedbackCopy.detailHeading}</h1>
+            <p>{feedbackCopy.detailPrompt}</p>
             <label>
               Comment <span>optional</span>
               <textarea
