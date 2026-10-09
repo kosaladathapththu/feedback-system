@@ -1,15 +1,22 @@
 import { collection, getDocs, limit, query, where } from "firebase/firestore";
 import { db } from "../firebase/config";
 
+const apartmentNumbers = [
+  401, 402, 403, 404, 405, 406,
+  501, 502, 503, 504, 505, 506,
+  601, 602, 603, 604, 605, 606,
+  701, 702, 703,
+];
+
 const previewLocations = [
-  {
-    id: "preview-apt-12",
-    code: "APT-12",
-    name: "Apartment 12",
+  ...apartmentNumbers.map((number) => ({
+    id: `preview-apt-${number}`,
+    code: `APT-${number}`,
+    name: `Apartment ${number}`,
     zone: "apartment",
-    floor: "1",
+    floor: String(number)[0],
     active: true,
-  },
+  })),
   {
     id: "preview-rst-01",
     code: "RST-01",

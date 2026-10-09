@@ -18,10 +18,10 @@ Responsive QR-based guest feedback and management application built with React, 
 4. Create a location document such as:
 
 ```json
-{"code":"APT-12","name":"Apartment 12","zone":"apartment","floor":"1","active":true}
+{"code":"APT-401","name":"Apartment 401","zone":"apartment","floor":"4","active":true}
 ```
 
-5. Run `npm run dev`, then open `http://localhost:5173/f/APT-12`.
+5. Run `npm run dev`, then open `http://localhost:5173/f/APT-401`.
 
 ## Initial administrator
 

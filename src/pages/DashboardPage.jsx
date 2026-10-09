@@ -69,8 +69,8 @@ const demoFeedback = [
   {
     id: "FB-20260824-0102",
     feedbackId: "FB-20260824-0102",
-    locationName: "Apartment 12",
-    locationId: "APT-12",
+    locationName: "Apartment 401",
+    locationId: "APT-401",
     rating: 2,
     categories: ["Maintenance"],
     comment: "The air conditioner needs attention.",
@@ -95,15 +95,21 @@ const feedbackLocationZones = [
   { value: "lobbyArea", label: "Lobby Area", icon: DoorOpen },
   { value: "washroom", label: "Washroom", icon: Bath },
 ];
+const apartmentNumbers = [
+  401, 402, 403, 404, 405, 406,
+  501, 502, 503, 504, 505, 506,
+  601, 602, 603, 604, 605, 606,
+  701, 702, 703,
+];
 const demoLocations = [
-  {
-    id: "1",
-    code: "APT-12",
-    name: "Apartment 12",
+  ...apartmentNumbers.map((number) => ({
+    id: `apt-${number}`,
+    code: `APT-${number}`,
+    name: `Apartment ${number}`,
     zone: "apartment",
-    floor: "1",
+    floor: String(number)[0],
     active: true,
-  },
+  })),
   {
     id: "2",
     code: "RST-01",
